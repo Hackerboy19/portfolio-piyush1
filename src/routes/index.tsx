@@ -8,17 +8,17 @@ import { SectionHeader } from "@/components/site/SectionHeader";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Aira — Creative Developer & Designer" },
+      { title: "Piyush — Creative Developer & Designer" },
       {
         name: "description",
         content:
-          "Hi, I'm Aira — a creative developer crafting calm, modern, animated web experiences with care.",
+          "Hi, I'm Piyush — a creative developer crafting calm, modern, animated web experiences with care.",
       },
-      { property: "og:title", content: "Aira — Creative Developer & Designer" },
+      { property: "og:title", content: "Piyush — Creative Developer & Designer" },
       {
         property: "og:description",
         content:
-          "Hi, I'm Aira — a creative developer crafting calm, modern, animated web experiences with care.",
+          "Hi, I'm Piyush — a creative developer crafting calm, modern, animated web experiences with care.",
       },
     ],
   }),
@@ -41,7 +41,7 @@ function Index() {
           </span>
           <h1 className="reveal mt-5 text-4xl font-bold leading-tight sm:text-5xl md:text-6xl">
             Hello, I am{" "}
-            <span className="gradient-text">Aira</span>
+            <span className="gradient-text">Piyush</span>
             <br />
             <span className="text-2xl text-muted-foreground sm:text-3xl md:text-4xl">
               I&rsquo;m{" "}
@@ -100,7 +100,7 @@ function Index() {
           <div className="relative animate-float overflow-hidden rounded-[2.5rem] glass p-2 shadow-glow">
             <img
               src={heroCharacter}
-              alt="Anime-style illustration of Aira holding a laptop"
+              alt="Anime-style illustration of Piyush holding a laptop"
               width={1024}
               height={1024}
               decoding="async"

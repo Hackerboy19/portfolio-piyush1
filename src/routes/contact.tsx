@@ -7,10 +7,10 @@ import { SectionHeader } from "@/components/site/SectionHeader";
 export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
-      { title: "Contact — Aira" },
-      { name: "description", content: "Get in touch with Aira for collaborations, freelance projects, or just to say hi." },
-      { property: "og:title", content: "Contact — Aira" },
-      { property: "og:description", content: "Get in touch with Aira for collaborations, freelance projects, or just to say hi." },
+      { title: "Contact — Piyush" },
+      { name: "description", content: "Get in touch with Piyush for collaborations, freelance projects, or just to say hi." },
+      { property: "og:title", content: "Contact — Piyush" },
+      { property: "og:description", content: "Get in touch with Piyush for collaborations, freelance projects, or just to say hi." },
     ],
   }),
   component: ContactPage,

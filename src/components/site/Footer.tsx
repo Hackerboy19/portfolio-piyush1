@@ -6,7 +6,7 @@ export function Footer() {
     <footer className="mt-24 border-t border-border/60">
       <div className="mx-auto grid max-w-6xl gap-8 px-4 py-10 md:grid-cols-3">
         <div>
-          <h3 className="gradient-text text-xl font-bold">Aira.dev</h3>
+          <h3 className="gradient-text text-xl font-bold">Piyush Portfolio</h3>
           <p className="mt-2 max-w-xs text-sm text-muted-foreground">
             Crafting calm, modern interfaces with a touch of magic.
           </p>
@@ -46,7 +46,7 @@ export function Footer() {
         </div>
       </div>
       <div className="border-t border-border/60 py-4 text-center text-xs text-muted-foreground">
-        © {new Date().getFullYear()} Aira.dev — Made with care.
+        © {new Date().getFullYear()} Piyush Portfolio — Made with care.
       </div>
     </footer>
   );

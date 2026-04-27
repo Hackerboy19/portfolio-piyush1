@@ -7,10 +7,10 @@ import heroCharacter from "@/assets/hero-character.png";
 export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
-      { title: "About — Aira" },
-      { name: "description", content: "Learn about Aira: my story, values, and what I love to build on the web." },
-      { property: "og:title", content: "About — Aira" },
-      { property: "og:description", content: "Learn about Aira: my story, values, and what I love to build on the web." },
+      { title: "About — Piyush" },
+      { name: "description", content: "Learn about Piyush: my story, values, and what I love to build on the web." },
+      { property: "og:title", content: "About — Piyush" },
+      { property: "og:description", content: "Learn about Piyush: my story, values, and what I love to build on the web." },
     ],
   }),
   component: AboutPage,
@@ -22,7 +22,7 @@ function AboutPage() {
     <div ref={ref} className="mx-auto max-w-6xl px-4 py-16">
       <SectionHeader
         eyebrow="About"
-        title={<>Hi, I&rsquo;m <span className="gradient-text">Aira</span></>}
+        title={<>Hi, I&rsquo;m <span className="gradient-text">Piyush</span></>}
         description="A creative developer with a soft spot for animation, calm UI, and tiny delightful details."
       />
 
@@ -32,7 +32,7 @@ function AboutPage() {
           <div className="relative overflow-hidden rounded-[2rem] glass p-2 shadow-glow">
             <img
               src={heroCharacter}
-              alt="Illustrated portrait of Aira"
+              alt="Illustrated portrait of Piyush"
               width={1024}
               height={1024}
               loading="lazy"
