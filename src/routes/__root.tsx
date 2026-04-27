@@ -56,6 +56,12 @@ export const Route = createRootRoute({
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@aira_dev" },
+      { name: "twitter:title", content: "Piyush — Creative Developer & Designer" },
+      { name: "description", content: "I design and build calm, fast, beautifully animated interfaces — blending modern web tech with a soft anime aesthetic." },
+      { property: "og:description", content: "I design and build calm, fast, beautifully animated interfaces — blending modern web tech with a soft anime aesthetic." },
+      { name: "twitter:description", content: "I design and build calm, fast, beautifully animated interfaces — blending modern web tech with a soft anime aesthetic." },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/fd138bfb-a393-4af3-bdd4-1ee6108caa20" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/fd138bfb-a393-4af3-bdd4-1ee6108caa20" },
     ],
     links: [
       {
