@@ -1,6 +1,17 @@
-import { Outlet, Link, createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
+import {
+  Outlet,
+  Link,
+  ScriptOnce,
+  createRootRoute,
+  HeadContent,
+  Scripts,
+} from "@tanstack/react-router";
 
 import appCss from "../styles.css?url";
+import { Navbar } from "@/components/site/Navbar";
+import { Footer } from "@/components/site/Footer";
+import { AnimatedBackground } from "@/components/site/AnimatedBackground";
+import { ThemeProvider, themeBootScript } from "@/hooks/use-theme";
 
 function NotFoundComponent() {
   return (
@@ -29,20 +40,30 @@ export const Route = createRootRoute({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "Aira — Creative Developer & Designer" },
+      {
+        name: "description",
+        content:
+          "Modern animated portfolio of Aira — a creative developer building calm, fast, beautiful interfaces.",
+      },
+      { name: "author", content: "Aira" },
+      { property: "og:title", content: "Aira — Creative Developer & Designer" },
+      {
+        property: "og:description",
+        content:
+          "Modern animated portfolio of Aira — a creative developer building calm, fast, beautiful interfaces.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:site", content: "@aira_dev" },
     ],
     links: [
       {
         rel: "stylesheet",
         href: appCss,
       },
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
     ],
   }),
   shellComponent: RootShell,
@@ -52,8 +73,9 @@ export const Route = createRootRoute({
 
 function RootShell({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
+        <ScriptOnce>{themeBootScript}</ScriptOnce>
         <HeadContent />
       </head>
       <body>
@@ -65,5 +87,16 @@ function RootShell({ children }: { children: React.ReactNode }) {
 }
 
 function RootComponent() {
-  return <Outlet />;
+  return (
+    <ThemeProvider>
+      <AnimatedBackground />
+      <div className="flex min-h-screen flex-col">
+        <Navbar />
+        <main className="flex-1">
+          <Outlet />
+        </main>
+        <Footer />
+      </div>
+    </ThemeProvider>
+  );
 }
