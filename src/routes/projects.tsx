@@ -7,10 +7,10 @@ import { SectionHeader } from "@/components/site/SectionHeader";
 export const Route = createFileRoute("/projects")({
   head: () => ({
     meta: [
-      { title: "Projects — Aira" },
-      { name: "description", content: "Selected work by Aira: web apps, design systems, and creative experiments." },
-      { property: "og:title", content: "Projects — Aira" },
-      { property: "og:description", content: "Selected work by Aira: web apps, design systems, and creative experiments." },
+      { title: "Projects — Piyush" },
+      { name: "description", content: "Selected work by Piyush: web apps, design systems, and creative experiments." },
+      { property: "og:title", content: "Projects — Piyush" },
+      { property: "og:description", content: "Selected work by Piyush: web apps, design systems, and creative experiments." },
     ],
   }),
   component: ProjectsPage,

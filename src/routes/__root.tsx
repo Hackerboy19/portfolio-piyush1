@@ -40,18 +40,18 @@ export const Route = createRootRoute({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Aira — Creative Developer & Designer" },
+      { title: "Piyush — Creative Developer & Designer" },
       {
         name: "description",
         content:
-          "Modern animated portfolio of Aira — a creative developer building calm, fast, beautiful interfaces.",
+          "Modern animated portfolio of Piyush — a creative developer building calm, fast, beautiful interfaces.",
       },
-      { name: "author", content: "Aira" },
-      { property: "og:title", content: "Aira — Creative Developer & Designer" },
+      { name: "author", content: "Piyush" },
+      { property: "og:title", content: "Piyush — Creative Developer & Designer" },
       {
         property: "og:description",
         content:
-          "Modern animated portfolio of Aira — a creative developer building calm, fast, beautiful interfaces.",
+          "Modern animated portfolio of Piyush — a creative developer building calm, fast, beautiful interfaces.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },

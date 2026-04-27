@@ -50,7 +50,7 @@ export function Navbar() {
             <span className="grid h-8 w-8 place-items-center rounded-xl bg-primary text-primary-foreground shadow-glow">
               <Sparkles className="h-4 w-4" />
             </span>
-            <span className="gradient-text text-lg">Aira.dev</span>
+            <span className="gradient-text text-lg">Piyush Portfolio</span>
           </Link>
 
           <ul className="hidden items-center gap-1 md:flex">

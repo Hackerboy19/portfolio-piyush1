@@ -6,22 +6,22 @@ import { SectionHeader } from "@/components/site/SectionHeader";
 export const Route = createFileRoute("/testimonials")({
   head: () => ({
     meta: [
-      { title: "Testimonials — Aira" },
-      { name: "description", content: "Kind words from teammates and clients Aira has worked with." },
-      { property: "og:title", content: "Testimonials — Aira" },
-      { property: "og:description", content: "Kind words from teammates and clients Aira has worked with." },
+      { title: "Testimonials — Piyush" },
+      { name: "description", content: "Kind words from teammates and clients Piyush has worked with." },
+      { property: "og:title", content: "Testimonials — Piyush" },
+      { property: "og:description", content: "Kind words from teammates and clients Piyush has worked with." },
     ],
   }),
   component: TestimonialsPage,
 });
 
 const QUOTES = [
-  { name: "Mika S.", role: "Product Lead, Lumen", text: "Aira shipped a calm, fast UI that our users keep mentioning. Easy to work with and obsessed with the details.", avatar: "M" },
+  { name: "Mika S.", role: "Product Lead, Lumen", text: "Piyush shipped a calm, fast UI that our users keep mentioning. Easy to work with and obsessed with the details.", avatar: "M" },
   { name: "Jonas T.", role: "Founder, Cozy Cafe", text: "Beautiful brand site, and it actually loads fast. Sales jumped after launch — couldn't be happier.", avatar: "J" },
   { name: "Priya K.", role: "Engineering Manager", text: "One of the strongest frontend collaborators I've worked with. Thoughtful, kind, and incredibly fast.", avatar: "P" },
-  { name: "Ren H.", role: "Designer", text: "Aira understood the design intent so well that the final build felt better than the mockups.", avatar: "R" },
+  { name: "Ren H.", role: "Designer", text: "Piyush understood the design intent so well that the final build felt better than the mockups.", avatar: "R" },
   { name: "Lina O.", role: "PM, Sora", text: "Animations that finally made the dashboard feel premium. Tiny touches, huge difference.", avatar: "L" },
-  { name: "Daniel V.", role: "CTO, Mochi", text: "We hired Aira for a sprint. Two months later we're still finding new little delights they added.", avatar: "D" },
+  { name: "Daniel V.", role: "CTO, Mochi", text: "We hired Piyush for a sprint. Two months later we're still finding new little delights they added.", avatar: "D" },
 ];
 
 function TestimonialsPage() {
