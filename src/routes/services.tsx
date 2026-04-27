@@ -1,15 +1,33 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Code2, Layers, Palette, Rocket, Sparkles, Wand2 } from "lucide-react";
+import {
+  BarChart3,
+  Code2,
+  Layers,
+  Palette,
+  Rocket,
+  Search,
+  Smartphone,
+  Sparkles,
+  Wand2,
+} from "lucide-react";
 import { useReveal } from "@/hooks/use-reveal";
 import { SectionHeader } from "@/components/site/SectionHeader";
 
 export const Route = createFileRoute("/services")({
   head: () => ({
     meta: [
-      { title: "Services — Aira" },
-      { name: "description", content: "Services offered by Aira: web design, frontend engineering, design systems, and motion." },
-      { property: "og:title", content: "Services — Aira" },
-      { property: "og:description", content: "Services offered by Aira: web design, frontend engineering, design systems, and motion." },
+      { title: "Services — Piyush Portfolio" },
+      {
+        name: "description",
+        content:
+          "Services by Piyush: web design, frontend engineering, Android & iOS app development, SEO, and digital marketing.",
+      },
+      { property: "og:title", content: "Services — Piyush Portfolio" },
+      {
+        property: "og:description",
+        content:
+          "Services by Piyush: web design, frontend engineering, Android & iOS app development, SEO, and digital marketing.",
+      },
     ],
   }),
   component: ServicesPage,
@@ -18,6 +36,9 @@ export const Route = createFileRoute("/services")({
 const SERVICES = [
   { icon: Palette, title: "UI / UX Design", desc: "From wireframes to polished, accessible interfaces — designed in Figma, ready to ship." },
   { icon: Code2, title: "Frontend Engineering", desc: "Modern React + TypeScript apps that are fast, typed, and a joy to maintain." },
+  { icon: Smartphone, title: "Android & iOS App Development", desc: "Cross-platform mobile apps with native feel — built with React Native and Flutter." },
+  { icon: Search, title: "SEO Optimization", desc: "Technical SEO, on-page tuning, and Core Web Vitals work to help you rank and convert." },
+  { icon: BarChart3, title: "Digital Marketing", desc: "Performance campaigns, analytics, and content strategy that turn traffic into customers." },
   { icon: Layers, title: "Design Systems", desc: "Reusable component libraries with tokens, theming, and rock-solid accessibility." },
   { icon: Wand2, title: "Motion & Micro-interactions", desc: "Subtle, performant animation that brings personality to every interaction." },
   { icon: Rocket, title: "Performance Audits", desc: "Identify bottlenecks and ship Lighthouse-friendly experiences across devices." },
