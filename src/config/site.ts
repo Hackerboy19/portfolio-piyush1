@@ -31,7 +31,8 @@ export const siteConfig = {
     "Hi, I'm Piyush — a creative developer crafting calm, modern, animated web experiences with care.",
   ogImage:
     "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/fd138bfb-a393-4af3-bdd4-1ee6108caa20",
-  twitterHandle: "@aira_dev",
+  /** Used for twitter:site meta — replace with your @handle when you have one. */
+  twitterHandle: "@piyush",
   /** Path served from /public — drop a new file at this path to swap the resume. */
   resumeUrl: "/piyush-mishra-resume.pdf",
 } as const;
