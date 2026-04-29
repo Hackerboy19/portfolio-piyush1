@@ -114,7 +114,7 @@ function ContactPage() {
                 <a href="mailto:piyush@consumableai.com" className="hover:text-foreground">piyush@consumableai.com</a>
               </li>
               <li className="flex items-center gap-2">
-                <MapPin className="h-4 w-4 text-primary" /> Tokyo, Japan
+                <MapPin className="h-4 w-4 text-primary" /> Jaipur, India
               </li>
             </ul>
           </div>
