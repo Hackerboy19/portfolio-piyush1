@@ -28,7 +28,7 @@ export function Footer() {
             {[
               { href: "https://github.com/Hackerboy19", icon: Github, label: "GitHub" },
               { href: "https://twitter.com", icon: Twitter, label: "Twitter" },
-              { href: "https://linkedin.com", icon: Linkedin, label: "LinkedIn" },
+              { href: "https://www.linkedin.com/in/piyush-mishra-3549a114b/", icon: Linkedin, label: "LinkedIn" },
               { href: "mailto:piyush@consumableai.com", icon: Mail, label: "Email" },
             ].map(({ href, icon: Icon, label }) => (
               <a
