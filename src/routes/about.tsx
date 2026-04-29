@@ -55,7 +55,7 @@ function AboutPage() {
 
           <ul className="grid grid-cols-1 gap-3 pt-2 sm:grid-cols-2">
             {[
-              { icon: MapPin, label: "Based in Tokyo" },
+              { icon: MapPin, label: "Based in Jaipur" },
               { icon: Coffee, label: "Tea over coffee" },
               { icon: Heart, label: "Animation lover" },
               { icon: Sparkles, label: "Detail obsessed" },
