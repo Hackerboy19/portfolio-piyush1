@@ -26,7 +26,7 @@ export function Footer() {
           <h4 className="mb-3 text-sm font-semibold">Find me online</h4>
           <div className="flex gap-2">
             {[
-              { href: "https://github.com", icon: Github, label: "GitHub" },
+              { href: "https://github.com/Hackerboy19", icon: Github, label: "GitHub" },
               { href: "https://twitter.com", icon: Twitter, label: "Twitter" },
               { href: "https://linkedin.com", icon: Linkedin, label: "LinkedIn" },
               { href: "mailto:piyush@consumableai.com", icon: Mail, label: "Email" },

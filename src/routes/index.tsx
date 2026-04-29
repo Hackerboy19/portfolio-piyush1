@@ -75,7 +75,7 @@ function Index() {
 
           <div className="reveal mt-7 flex items-center gap-3">
             {[
-              { href: "https://github.com", icon: Github, label: "GitHub" },
+              { href: "https://github.com/Hackerboy19", icon: Github, label: "GitHub" },
               { href: "https://twitter.com", icon: Twitter, label: "Twitter" },
               { href: "https://linkedin.com", icon: Linkedin, label: "LinkedIn" },
               { href: "mailto:hello@aira.dev", icon: Mail, label: "Email" },

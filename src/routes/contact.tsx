@@ -123,7 +123,7 @@ function ContactPage() {
             <h3 className="text-base font-semibold">Find me online</h3>
             <div className="mt-3 flex gap-2">
               {[
-                { href: "https://github.com", icon: Github, label: "GitHub" },
+                { href: "https://github.com/Hackerboy19", icon: Github, label: "GitHub" },
                 { href: "https://twitter.com", icon: Twitter, label: "Twitter" },
                 { href: "https://linkedin.com", icon: Linkedin, label: "LinkedIn" },
               ].map(({ href, icon: Icon, label }) => (
