@@ -1,25 +1,21 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
-import { ArrowRight, Github, Linkedin, Mail, Sparkles, Twitter } from "lucide-react";
+import { ArrowRight, Download, Sparkles } from "lucide-react";
 import heroCharacter from "@/assets/hero-character.png";
 import { useTyping } from "@/hooks/use-typing";
 import { useReveal } from "@/hooks/use-reveal";
 import { SectionHeader } from "@/components/site/SectionHeader";
+import { siteConfig, socialLinksFor } from "@/config/site";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Piyush — Creative Developer & Designer" },
-      {
-        name: "description",
-        content:
-          "Hi, I'm Piyush — a creative developer crafting calm, modern, animated web experiences with care.",
-      },
-      { property: "og:title", content: "Piyush — Creative Developer & Designer" },
-      {
-        property: "og:description",
-        content:
-          "Hi, I'm Piyush — a creative developer crafting calm, modern, animated web experiences with care.",
-      },
+      { title: `${siteConfig.name} — ${siteConfig.role}` },
+      { name: "description", content: siteConfig.description },
+      { property: "og:title", content: `${siteConfig.name} — ${siteConfig.role}` },
+      { property: "og:description", content: siteConfig.description },
+      { property: "og:url", content: siteConfig.url },
+      { name: "twitter:title", content: `${siteConfig.name} — ${siteConfig.role}` },
+      { name: "twitter:description", content: siteConfig.description },
     ],
   }),
   component: Index,
@@ -30,6 +26,7 @@ const ROLES = ["a Frontend Developer.", "a UI/UX Designer.", "a Creative Coder."
 function Index() {
   const typed = useTyping(ROLES);
   const ref = useReveal<HTMLDivElement>();
+  const heroLinks = socialLinksFor("hero");
 
   return (
     <div ref={ref}>
@@ -41,7 +38,7 @@ function Index() {
           </span>
           <h1 className="reveal mt-5 text-4xl font-bold leading-tight sm:text-5xl md:text-6xl">
             Hello, I am{" "}
-            <span className="gradient-text">Piyush</span>
+            <span className="gradient-text">{siteConfig.shortName}</span>
             <br />
             <span className="text-2xl text-muted-foreground sm:text-3xl md:text-4xl">
               I&rsquo;m{" "}
@@ -65,6 +62,14 @@ function Index() {
               View Work
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Link>
+            <a
+              href={siteConfig.resumeUrl}
+              download
+              className="group inline-flex items-center gap-2 rounded-full glass px-6 py-3 text-sm font-semibold shadow-soft transition-all hover:-translate-y-0.5"
+            >
+              <Download className="h-4 w-4 transition-transform group-hover:translate-y-0.5" />
+              Download Resume
+            </a>
             <Link
               to="/contact"
               className="inline-flex items-center gap-2 rounded-full glass px-6 py-3 text-sm font-semibold shadow-soft transition-all hover:-translate-y-0.5"
@@ -74,14 +79,9 @@ function Index() {
           </div>
 
           <div className="reveal mt-7 flex items-center gap-3">
-            {[
-              { href: "https://github.com/Hackerboy19", icon: Github, label: "GitHub" },
-              { href: "https://twitter.com", icon: Twitter, label: "Twitter" },
-              { href: "https://www.linkedin.com/in/piyush-mishra-3549a114b/", icon: Linkedin, label: "LinkedIn" },
-              { href: "mailto:hello@aira.dev", icon: Mail, label: "Email" },
-            ].map(({ href, icon: Icon, label }) => (
+            {heroLinks.map(({ id, href, icon: Icon, label }) => (
               <a
-                key={label}
+                key={id}
                 href={href}
                 aria-label={label}
                 target="_blank"
@@ -100,11 +100,13 @@ function Index() {
           <div className="relative animate-float overflow-hidden rounded-[2.5rem] glass p-2 shadow-glow">
             <img
               src={heroCharacter}
-              alt="Anime-style illustration of Piyush holding a laptop"
+              alt={`Anime-style illustration of ${siteConfig.shortName} holding a laptop`}
               width={1024}
               height={1024}
               decoding="async"
               fetchPriority="high"
+              loading="eager"
+              sizes="(max-width: 768px) 90vw, (max-width: 1280px) 40vw, 480px"
               className="h-auto w-full max-w-sm rounded-[2rem]"
             />
           </div>
