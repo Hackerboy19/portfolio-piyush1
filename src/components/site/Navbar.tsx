@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { Menu, Sparkles, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { ThemeToggle } from "./ThemeToggle";
+import { siteConfig } from "@/config/site";
 
 const links = [
   { to: "/", label: "Home" },
@@ -50,7 +51,7 @@ export function Navbar() {
             <span className="grid h-8 w-8 place-items-center rounded-xl bg-primary text-primary-foreground shadow-glow">
               <Sparkles className="h-4 w-4" />
             </span>
-            <span className="gradient-text text-lg">Piyush Portfolio</span>
+            <span className="gradient-text text-lg">{siteConfig.brand}</span>
           </Link>
 
           <ul className="hidden items-center gap-1 md:flex">

@@ -37,6 +37,7 @@ function AboutPage() {
               height={1024}
               loading="lazy"
               decoding="async"
+              sizes="(max-width: 768px) 80vw, 384px"
               className="h-auto w-full rounded-[1.6rem]"
             />
           </div>
