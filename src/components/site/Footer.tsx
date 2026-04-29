@@ -29,7 +29,7 @@ export function Footer() {
               { href: "https://github.com", icon: Github, label: "GitHub" },
               { href: "https://twitter.com", icon: Twitter, label: "Twitter" },
               { href: "https://linkedin.com", icon: Linkedin, label: "LinkedIn" },
-              { href: "mailto:hello@aira.dev", icon: Mail, label: "Email" },
+              { href: "mailto:piyush@consumableai.com", icon: Mail, label: "Email" },
             ].map(({ href, icon: Icon, label }) => (
               <a
                 key={label}
