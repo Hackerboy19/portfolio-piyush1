@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Github, Linkedin, Mail, Twitter } from "lucide-react";
+import { Github, Linkedin, Mail } from "lucide-react";
 
 export function Footer() {
   return (
@@ -27,7 +27,6 @@ export function Footer() {
           <div className="flex gap-2">
             {[
               { href: "https://github.com/Hackerboy19", icon: Github, label: "GitHub" },
-              { href: "https://twitter.com", icon: Twitter, label: "Twitter" },
               { href: "https://www.linkedin.com/in/piyush-mishra-3549a114b/", icon: Linkedin, label: "LinkedIn" },
               { href: "mailto:piyush@consumableai.com", icon: Mail, label: "Email" },
             ].map(({ href, icon: Icon, label }) => (
