@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Github, Linkedin, Mail, MapPin, Send, Twitter } from "lucide-react";
+import { Github, Linkedin, Mail, MapPin, Send } from "lucide-react";
 import { useState } from "react";
 import { useReveal } from "@/hooks/use-reveal";
 import { SectionHeader } from "@/components/site/SectionHeader";
@@ -124,7 +124,6 @@ function ContactPage() {
             <div className="mt-3 flex gap-2">
               {[
                 { href: "https://github.com/Hackerboy19", icon: Github, label: "GitHub" },
-                { href: "https://twitter.com", icon: Twitter, label: "Twitter" },
                 { href: "https://www.linkedin.com/in/piyush-mishra-3549a114b/", icon: Linkedin, label: "LinkedIn" },
               ].map(({ href, icon: Icon, label }) => (
                 <a
