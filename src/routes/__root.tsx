@@ -12,6 +12,8 @@ import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { AnimatedBackground } from "@/components/site/AnimatedBackground";
 import { ThemeProvider, themeBootScript } from "@/hooks/use-theme";
+import { Toaster } from "@/components/ui/sonner";
+import { siteConfig } from "@/config/site";
 
 function NotFoundComponent() {
   return (
@@ -40,28 +42,17 @@ export const Route = createRootRoute({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Piyush — Creative Developer & Designer" },
-      {
-        name: "description",
-        content:
-          "Modern animated portfolio of Piyush — a creative developer building calm, fast, beautiful interfaces.",
-      },
-      { name: "author", content: "Piyush" },
-      { property: "og:title", content: "Piyush — Creative Developer & Designer" },
-      {
-        property: "og:description",
-        content:
-          "Modern animated portfolio of Piyush — a creative developer building calm, fast, beautiful interfaces.",
-      },
+      { name: "author", content: siteConfig.name },
+      { name: "description", content: siteConfig.description },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@aira_dev" },
-      { name: "twitter:title", content: "Piyush — Creative Developer & Designer" },
-      { name: "description", content: "I design and build calm, fast, beautifully animated interfaces — blending modern web tech with a soft anime aesthetic." },
-      { property: "og:description", content: "I design and build calm, fast, beautifully animated interfaces — blending modern web tech with a soft anime aesthetic." },
-      { name: "twitter:description", content: "I design and build calm, fast, beautifully animated interfaces — blending modern web tech with a soft anime aesthetic." },
-      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/fd138bfb-a393-4af3-bdd4-1ee6108caa20" },
-      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/fd138bfb-a393-4af3-bdd4-1ee6108caa20" },
+      { property: "og:site_name", content: siteConfig.brand },
+      { property: "og:url", content: siteConfig.url },
+      { property: "og:image", content: siteConfig.ogImage },
+      { property: "og:image:alt", content: `${siteConfig.name} — ${siteConfig.role}` },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:site", content: siteConfig.twitterHandle },
+      { name: "twitter:image", content: siteConfig.ogImage },
+      { name: "theme-color", content: "#7c5cff" },
     ],
     links: [
       {
@@ -70,6 +61,14 @@ export const Route = createRootRoute({
       },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+      // Preload the key font files for faster first paint
+      {
+        rel: "preload",
+        as: "style",
+        href: "https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600&display=swap",
+      },
+      { rel: "canonical", href: siteConfig.url },
+      { rel: "icon", href: "/favicon.ico" },
     ],
   }),
   shellComponent: RootShell,
@@ -103,6 +102,7 @@ function RootComponent() {
         </main>
         <Footer />
       </div>
+      <Toaster richColors position="top-right" />
     </ThemeProvider>
   );
 }
