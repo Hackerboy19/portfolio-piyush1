@@ -1,12 +1,13 @@
 import { Link } from "@tanstack/react-router";
-import { Github, Linkedin, Mail } from "lucide-react";
+import { siteConfig, socialLinksFor } from "@/config/site";
 
 export function Footer() {
+  const links = socialLinksFor("footer");
   return (
     <footer className="mt-24 border-t border-border/60">
       <div className="mx-auto grid max-w-6xl gap-8 px-4 py-10 md:grid-cols-3">
         <div>
-          <h3 className="gradient-text text-xl font-bold">Piyush Portfolio</h3>
+          <h3 className="gradient-text text-xl font-bold">{siteConfig.brand}</h3>
           <p className="mt-2 max-w-xs text-sm text-muted-foreground">
             Crafting calm, modern interfaces with a touch of magic.
           </p>
@@ -25,13 +26,9 @@ export function Footer() {
         <div>
           <h4 className="mb-3 text-sm font-semibold">Find me online</h4>
           <div className="flex gap-2">
-            {[
-              { href: "https://github.com/Hackerboy19", icon: Github, label: "GitHub" },
-              { href: "https://www.linkedin.com/in/piyush-mishra-3549a114b/", icon: Linkedin, label: "LinkedIn" },
-              { href: "mailto:piyush@consumableai.com", icon: Mail, label: "Email" },
-            ].map(({ href, icon: Icon, label }) => (
+            {links.map(({ id, href, icon: Icon, label }) => (
               <a
-                key={label}
+                key={id}
                 href={href}
                 aria-label={label}
                 target="_blank"
@@ -45,7 +42,7 @@ export function Footer() {
         </div>
       </div>
       <div className="border-t border-border/60 py-4 text-center text-xs text-muted-foreground">
-        © {new Date().getFullYear()} Piyush Portfolio — Made with care.
+        © {new Date().getFullYear()} {siteConfig.brand} — Made with care.
       </div>
     </footer>
   );
