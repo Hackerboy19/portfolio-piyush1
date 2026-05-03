@@ -25,6 +25,8 @@ export const siteConfig = {
   brand: "Piyush Portfolio",
   role: "Creative Developer & Designer",
   email: "piyush@consumableai.com",
+  phone: "+91 86966 98841",
+  phoneHref: "tel:+918696698841",
   location: "Jaipur, India",
   url: "https://portfolio-piyush1.lovable.app",
   description:

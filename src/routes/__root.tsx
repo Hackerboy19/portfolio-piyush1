@@ -53,6 +53,13 @@ export const Route = createRootRoute({
       { name: "twitter:site", content: siteConfig.twitterHandle },
       { name: "twitter:image", content: siteConfig.ogImage },
       { name: "theme-color", content: "#7c5cff" },
+      // Resume — SEO + social discoverability for the downloadable PDF
+      { name: "resume:title", content: `${siteConfig.name} — Resume (PDF)` },
+      {
+        name: "resume:description",
+        content: `Download the latest resume of ${siteConfig.name}, ${siteConfig.role}. One-page PDF.`,
+      },
+      { name: "resume:url", content: `${siteConfig.url}${siteConfig.resume.url}` },
     ],
     links: [
       {
@@ -69,6 +76,34 @@ export const Route = createRootRoute({
       },
       { rel: "canonical", href: siteConfig.url },
       { rel: "icon", href: "/favicon.ico" },
+      // Alternate machine-readable link to the resume PDF for crawlers
+      {
+        rel: "alternate",
+        type: "application/pdf",
+        href: `${siteConfig.url}${siteConfig.resume.url}`,
+        title: `${siteConfig.name} — Resume (PDF)`,
+      },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Person",
+          name: siteConfig.name,
+          jobTitle: siteConfig.role,
+          email: siteConfig.email,
+          telephone: siteConfig.phone,
+          url: siteConfig.url,
+          address: { "@type": "PostalAddress", addressLocality: siteConfig.location },
+          subjectOf: {
+            "@type": "DigitalDocument",
+            name: `${siteConfig.name} — Resume`,
+            encodingFormat: "application/pdf",
+            url: `${siteConfig.url}${siteConfig.resume.url}`,
+          },
+        }),
+      },
     ],
   }),
   shellComponent: RootShell,
