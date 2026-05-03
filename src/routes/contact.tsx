@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Mail, MapPin, Send } from "lucide-react";
+import { Mail, MapPin, Phone, Send } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { useReveal } from "@/hooks/use-reveal";
@@ -162,6 +162,12 @@ function ContactPage() {
                 <Mail className="h-4 w-4 text-primary" />
                 <a href={`mailto:${siteConfig.email}`} className="hover:text-foreground">
                   {siteConfig.email}
+                </a>
+              </li>
+              <li className="flex items-center gap-2">
+                <Phone className="h-4 w-4 text-primary" />
+                <a href={siteConfig.phoneHref} className="hover:text-foreground">
+                  {siteConfig.phone}
                 </a>
               </li>
               <li className="flex items-center gap-2">
