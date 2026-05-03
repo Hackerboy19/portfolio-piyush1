@@ -48,7 +48,9 @@ export function CyberDownloadButton({
           : "0 0 0 rgba(0,0,0,0)",
       }}
       transition={{ duration: prefersReducedMotion ? 0 : 0.25 }}
-      className={`group relative inline-flex items-center gap-3 overflow-hidden rounded-md border border-[rgba(0,255,170,0.6)] bg-[#05100c] px-5 py-3 font-mono text-sm font-semibold text-[#7CFFCB] no-underline ${className}`}
+      data-analytics-event="resume_download"
+      data-analytics-href={href}
+      className={`group relative inline-flex items-center gap-3 overflow-hidden rounded-md border border-[rgba(0,255,170,0.6)] bg-[#05100c] px-5 py-3 font-mono text-sm font-semibold text-[#7CFFCB] no-underline outline-none focus-visible:ring-2 focus-visible:ring-[#7CFFCB] focus-visible:ring-offset-2 focus-visible:ring-offset-background focus-visible:shadow-[0_0_0_4px_rgba(0,255,170,0.35),0_0_24px_rgba(0,255,170,0.55)] ${className}`}
       style={{ textShadow: "0 0 6px rgba(0,255,170,0.6)" }}
     >
       {/* Scanline sweep on hover */}
