@@ -1,52 +1,53 @@
-# Premium Animated Portfolio — Plan
+## Goal
 
-A modern, production-ready personal portfolio with a soft pastel light theme, glassmorphism, smooth animations, and dark/light toggle. Built on TanStack Start with separate SEO-friendly routes.
+Polish the `CyberDownloadButton` so it's accessible, reusable, and driven entirely by `src/config/site.ts` — no component edits needed when the resume URL or label changes. Reuse it on the Contact page, and wire in the real resume PDF.
 
-## Design system
+## Changes
 
-- **Theme**: Light default with soft pastel gradient (lavender → peach → mint), full dark mode toggle (persisted to localStorage, respects system preference)
-- **Typography**: Modern pairing — `Sora` (headings, geometric) + `Inter` (body)
-- **Effects**: Gradient text on key headings, glassmorphism cards (backdrop-blur + soft shadows), subtle animated background blur shapes (floating gradient orbs)
-- **Motion**: Tailwind utilities + CSS keyframes, scroll-triggered reveals via IntersectionObserver (no heavy libraries), `prefers-reduced-motion` respected
+### 1. `src/config/site.ts` — single source of truth
+Add a `resume` block (replacing the loose `resumeUrl`) so URL + button label live together, plus an optional Fortexa link if you want it surfaced as a social/work link.
 
-## Routes (each with unique SEO meta)
+```ts
+resume: {
+  url: "/piyush-mishra-resume.pdf",   // file already in /public
+  label: "./download_resume.sh",      // terminal-style label
+  filename: "piyush-mishra-resume.pdf",
+},
+```
 
-1. **`/` — Home**
-   - Split hero: left = greeting + typing animation ("Hello, I am [rotating roles]") with blinking cursor, gradient name, two animated CTAs (View Work / Contact Me), social icons
-   - Right = anime-style placeholder character in a soft glass frame with floating gradient orbs behind
-   - Highlights strip below the fold
-2. **`/about`** — Bio, photo, fun facts, downloadable resume CTA
-3. **`/skills`** — Animated skill bars + tech stack icon grid (reveal on scroll)
-4. **`/services`** — 3–6 service cards with hover lift and gradient border
-5. **`/projects`** — Filterable project grid (glass cards, hover zoom, tags, live/code links). Seeded with 6 sample projects
-6. **`/testimonials`** — Grid/carousel of client quotes with avatars
-7. **`/contact`** — Contact form (name/email/message) with validation + animated submit; socials + email + location
+Also add a new social entry for **Fortexa Tech** (https://fortexatech.com/) using a `Briefcase` or `Globe` lucide icon, scoped to `show: ["contact", "footer"]` so it doesn't clutter the hero. (Confirm during build if you'd rather skip this.)
 
-## Shared layout
+Keep `resumeUrl` as a deprecated alias pointing to `resume.url` so the existing Contact page "Download Resume" link doesn't break mid-edit.
 
-- **Sticky glass navbar**: Logo, links, theme toggle, mobile hamburger with slide-in drawer
-- **Footer**: Mini nav, socials, copyright
-- **Animated background**: Fixed layer with 2–3 blurred gradient blobs slowly drifting (GPU-friendly CSS)
+### 2. `src/components/site/CyberDownloadButton.tsx` — accessibility + props
 
-## Features checklist
+- Accept optional `href`, `label`, `filename`, `className` props. Defaults pull from `siteConfig.resume`, so `<CyberDownloadButton />` Just Works.
+- Detect `prefers-reduced-motion` via a small `useReducedMotion` hook (or framer-motion's built-in `useReducedMotion()`):
+  - Disable the infinite scanline sweep, the magenta/cyan glitch layers, and the blinking cursor animation (cursor stays visible but static).
+  - Replace the "scrambling" downloading state with a plain `[ Downloading... ]` swap — no motion, no pulsing icon (use static `Download` icon).
+  - Keep the hover glow as a single non-animated box-shadow (or remove transition entirely).
+  - Keep `whileHover`/`whileTap` micro-movements off when reduced motion is set.
+- Add `aria-label={`Download resume (${filename})`}` and `type="button"`-equivalent semantics on the anchor.
+- Keep `download` attribute and `target="_blank"` only when href is external; for same-origin `/piyush-mishra-resume.pdf` drop `target="_blank"` so the browser triggers the download instead of opening a new tab.
 
-- ✅ Typing animation with blinking cursor (custom hook, no library)
-- ✅ Fully responsive (mobile / tablet / desktop)
-- ✅ Smooth scroll + scroll-reveal animations
-- ✅ Animated gradient buttons (hover lift + shift)
-- ✅ Section fade/slide transitions
-- ✅ Optimized images (`loading="lazy"`, `decoding="async"`, proper sizing)
-- ✅ Dark/Light toggle (system preference + localStorage, no FOUC)
-- ✅ SEO: per-route `<title>`, description, og:title, og:description
-- ✅ Fast: no heavy animation libraries
+### 3. `src/routes/contact.tsx` — reuse the button
+Replace the existing plain "Download Resume" anchor in the form's footer with `<CyberDownloadButton />`. Same component, same defaults — visual consistency with the hero.
 
-## Anime placeholder character
+### 4. `src/routes/index.tsx`
+No structural change — the hero already uses `<CyberDownloadButton />`. After the config change it will automatically point to `/piyush-mishra-resume.pdf` instead of the LinkedIn URL.
 
-A free open-source anime-style illustration as a swappable hero image — one-line replace when you want your own.
+## Technical notes
 
-## After build — quick tips
+- `framer-motion` exports `useReducedMotion()` — already installed, no new deps.
+- The PDF (`public/piyush-mishra-resume.pdf`) was generated in an earlier turn, so the `download` attribute will produce a real file download.
+- No backend / migration changes.
 
-- **Free deployment**: Click **Publish** in Lovable for an instant `*.lovable.app` URL.
-- **Clothing brand variant**: Swap copy (Home → "New Drop"), rename Projects → "Lookbook", Services → "Collections", Testimonials → "Reviews", and update the pastel palette via design tokens in `src/styles.css` — structure stays identical.
+## Files touched
 
-Ready to build when you approve.
+- edit `src/config/site.ts`
+- edit `src/components/site/CyberDownloadButton.tsx`
+- edit `src/routes/contact.tsx`
+
+## Open question
+
+Want the **Fortexa Tech** link added as a social entry (icon in Contact + Footer), or keep it out of the social list and instead mention it as a "Currently building at Fortexa Tech" badge somewhere on the About / Hero? I'll default to adding it as a social link unless you say otherwise.

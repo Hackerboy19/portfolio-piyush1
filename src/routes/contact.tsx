@@ -1,11 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Download, Mail, MapPin, Send } from "lucide-react";
+import { Mail, MapPin, Send } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { useReveal } from "@/hooks/use-reveal";
 import { SectionHeader } from "@/components/site/SectionHeader";
 import { siteConfig, socialLinksFor } from "@/config/site";
 import { submitContactMessage } from "@/server/contact.functions";
+import { CyberDownloadButton } from "@/components/site/CyberDownloadButton";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -148,14 +149,7 @@ function ContactPage() {
               <Send className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
               {status === "sending" ? "Sending…" : status === "sent" ? "Sent!" : "Send message"}
             </button>
-            <a
-              href={siteConfig.resumeUrl}
-              download
-              className="inline-flex items-center gap-2 rounded-full glass px-5 py-3 text-sm font-semibold shadow-soft transition-all hover:-translate-y-0.5"
-            >
-              <Download className="h-4 w-4" />
-              Download Resume
-            </a>
+            <CyberDownloadButton />
           </div>
         </form>
 

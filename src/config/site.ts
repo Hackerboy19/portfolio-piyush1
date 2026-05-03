@@ -1,4 +1,4 @@
-import { Github, Linkedin, Mail, Twitter, type LucideIcon } from "lucide-react";
+import { Briefcase, Github, Linkedin, Mail, Twitter, type LucideIcon } from "lucide-react";
 
 /**
  * Single source of truth for personal/site info.
@@ -33,7 +33,16 @@ export const siteConfig = {
     "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/fd138bfb-a393-4af3-bdd4-1ee6108caa20",
   /** Used for twitter:site meta — replace with your @handle when you have one. */
   twitterHandle: "@piyush",
-  /** Path served from /public — drop a new file at this path to swap the resume. */
+  /**
+   * Resume download — single source of truth for the CyberDownloadButton.
+   * Swap the file in /public or change the URL/label here, no component edits needed.
+   */
+  resume: {
+    url: "/piyush-mishra-resume.pdf",
+    label: "./download_resume.sh",
+    filename: "piyush-mishra-resume.pdf",
+  },
+  /** @deprecated use siteConfig.resume.url */
   resumeUrl: "/piyush-mishra-resume.pdf",
 } as const;
 
@@ -60,6 +69,13 @@ export const socialLinks: SocialLink[] = [
     label: "Email",
     href: `mailto:${siteConfig.email}`,
     icon: Mail,
+  },
+  {
+    id: "fortexa",
+    label: "Fortexa Tech",
+    href: "https://fortexatech.com/",
+    icon: Briefcase,
+    show: ["contact", "footer"],
   },
   // Example — uncomment to bring Twitter back:
   // { id: "twitter", label: "Twitter", href: "https://twitter.com/yourhandle", icon: Twitter },
