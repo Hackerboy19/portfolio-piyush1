@@ -27,6 +27,37 @@ export function CyberDownloadButton({
   const handleClick = () => {
     setDownloading(true);
     window.setTimeout(() => setDownloading(false), 1600);
+
+    // Analytics: fire to GA (gtag), Plausible, and a generic CustomEvent
+    // so any analytics layer added later can listen without code changes.
+    try {
+      const payload = {
+        file_name: filename,
+        file_url: href,
+        link_label: label,
+        location: typeof window !== "undefined" ? window.location.pathname : "",
+      };
+
+      const w = window as unknown as {
+        gtag?: (...args: unknown[]) => void;
+        plausible?: (event: string, opts?: { props?: Record<string, unknown> }) => void;
+        dataLayer?: unknown[];
+      };
+
+      w.gtag?.("event", "resume_download", payload);
+      w.plausible?.("Resume Download", { props: payload });
+      w.dataLayer?.push({ event: "resume_download", ...payload });
+
+      window.dispatchEvent(
+        new CustomEvent("analytics:resume_download", { detail: payload }),
+      );
+
+      // Lightweight console signal so you can verify in DevTools immediately.
+      // eslint-disable-next-line no-console
+      console.info("[analytics] resume_download", payload);
+    } catch {
+      // Never block the download for analytics failures.
+    }
   };
 
   const text = downloading ? "[ Downloading... ]" : label;
