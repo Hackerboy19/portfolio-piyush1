@@ -1,5 +1,5 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
-import { ArrowRight, Download, Sparkles } from "lucide-react";
+import { ArrowRight, Sparkles } from "lucide-react";
 import heroCharacter from "@/assets/hero-character.png";
 import { useTyping } from "@/hooks/use-typing";
 import { useReveal } from "@/hooks/use-reveal";
