@@ -1,10 +1,11 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
-import { ArrowRight, Download, Sparkles } from "lucide-react";
+import { ArrowRight, Sparkles } from "lucide-react";
 import heroCharacter from "@/assets/hero-character.png";
 import { useTyping } from "@/hooks/use-typing";
 import { useReveal } from "@/hooks/use-reveal";
 import { SectionHeader } from "@/components/site/SectionHeader";
 import { siteConfig, socialLinksFor } from "@/config/site";
+import { CyberDownloadButton } from "@/components/site/CyberDownloadButton";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -62,14 +63,7 @@ function Index() {
               View Work
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Link>
-            <a
-              href={siteConfig.resumeUrl}
-              download
-              className="group inline-flex items-center gap-2 rounded-full glass px-6 py-3 text-sm font-semibold shadow-soft transition-all hover:-translate-y-0.5"
-            >
-              <Download className="h-4 w-4 transition-transform group-hover:translate-y-0.5" />
-              Download Resume
-            </a>
+            <CyberDownloadButton />
             <Link
               to="/contact"
               className="inline-flex items-center gap-2 rounded-full glass px-6 py-3 text-sm font-semibold shadow-soft transition-all hover:-translate-y-0.5"
