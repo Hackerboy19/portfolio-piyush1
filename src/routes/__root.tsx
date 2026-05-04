@@ -60,6 +60,36 @@ export const Route = createRootRoute({
         content: `Download the latest resume of ${siteConfig.name}, ${siteConfig.role}. One-page PDF.`,
       },
       { name: "resume:url", content: `${siteConfig.url}${siteConfig.resume.url}` },
+      // Open Graph + Twitter card for the resume PDF — ensures proper preview
+      // when the resume URL itself, or a page linking to it, is shared.
+      {
+        property: "og:title",
+        content: `${siteConfig.name} — Resume (PDF)`,
+      },
+      {
+        property: "og:description",
+        content: `Download the latest resume of ${siteConfig.name}, ${siteConfig.role}. One-page PDF.`,
+      },
+      {
+        property: "og:see_also",
+        content: `${siteConfig.url}${siteConfig.resume.url}`,
+      },
+      {
+        name: "twitter:title",
+        content: `${siteConfig.name} — Resume (PDF)`,
+      },
+      {
+        name: "twitter:description",
+        content: `Download the resume of ${siteConfig.name}, ${siteConfig.role}.`,
+      },
+      {
+        name: "twitter:label1",
+        content: "Document",
+      },
+      {
+        name: "twitter:data1",
+        content: `${siteConfig.url}${siteConfig.resume.url}`,
+      },
     ],
     links: [
       {
