@@ -44,13 +44,15 @@ export function CyberDownloadButton({
         dataLayer?: unknown[];
       };
 
-      w.gtag?.("event", "resume_download", payload);
-      w.plausible?.("Resume Download", { props: payload });
-      w.dataLayer?.push({ event: "resume_download", ...payload });
-
-      window.dispatchEvent(
-        new CustomEvent("analytics:resume_download", { detail: payload }),
-      );
+      const a = siteConfig.analytics;
+      if (a.gtag) w.gtag?.("event", "resume_download", payload);
+      if (a.plausible) w.plausible?.("Resume Download", { props: payload });
+      if (a.dataLayer) w.dataLayer?.push({ event: "resume_download", ...payload });
+      if (a.customEvent) {
+        window.dispatchEvent(
+          new CustomEvent("analytics:resume_download", { detail: payload }),
+        );
+      }
 
       // Lightweight console signal so you can verify in DevTools immediately.
       // eslint-disable-next-line no-console
@@ -63,11 +65,17 @@ export function CyberDownloadButton({
   const text = downloading ? "[ Downloading... ]" : label;
 
   return (
+    <>
     <motion.a
       href={href}
       {...(isExternal ? { target: "_blank", rel: "noreferrer" } : {})}
       download={filename}
-      aria-label={`Download resume (${filename})`}
+      aria-label={
+        downloading
+          ? `Downloading resume ${filename}`
+          : `${label} — download resume (${filename})`
+      }
+      aria-busy={downloading || undefined}
       onClick={handleClick}
       onHoverStart={() => setHovered(true)}
       onHoverEnd={() => setHovered(false)}
@@ -98,6 +106,18 @@ export function CyberDownloadButton({
           }}
         />
       )}
+    </motion.a>
+    {/* Screen-reader-only live region announcing label changes */}
+    <span
+      aria-live="polite"
+      aria-atomic="true"
+      className="sr-only"
+    >
+      {downloading ? "Downloading resume" : ""}
+    </span>
+    </>
+  );
+}
 
       {/* Glitch layers on hover */}
       <span className="relative inline-flex items-center gap-2">
