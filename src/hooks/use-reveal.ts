@@ -3,6 +3,12 @@ import { useEffect, useRef } from "react";
 /**
  * Adds `is-visible` class to children with `.reveal` once they enter the viewport.
  * Lightweight scroll reveal using IntersectionObserver — no library required.
+ *
+ * - Respects `prefers-reduced-motion`: instantly marks all items visible
+ *   (no transition delays, no observer) so users get content without motion.
+ * - On coarse-pointer (mobile) devices, transition delays are shortened and
+ *   capped to reduce paint work during scroll.
+ * - Disconnects the observer once every item has been revealed.
  */
 export function useReveal<T extends HTMLElement = HTMLDivElement>() {
   const ref = useRef<T | null>(null);
@@ -13,23 +19,42 @@ export function useReveal<T extends HTMLElement = HTMLDivElement>() {
     const items = Array.from(root.querySelectorAll<HTMLElement>(".reveal"));
     if (items.length === 0) return;
 
+    const mm = typeof window !== "undefined" ? window.matchMedia : undefined;
+    const reduced = mm?.("(prefers-reduced-motion: reduce)").matches ?? false;
+    const coarse = mm?.("(pointer: coarse)").matches ?? false;
+
+    // Reduced motion: skip animation, skip observer entirely.
+    if (reduced) {
+      items.forEach((el) => {
+        el.style.transitionDelay = "0ms";
+        el.classList.add("is-visible");
+      });
+      return;
+    }
+
+    // Lighter staggering on mobile: smaller step + lower cap.
+    const step = coarse ? 40 : 60;
+    const cap = coarse ? 240 : 400;
+    items.forEach((el, i) => {
+      el.style.transitionDelay = `${Math.min(i * step, cap)}ms`;
+    });
+
+    let revealed = 0;
+    const total = items.length;
     const io = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("is-visible");
-            io.unobserve(entry.target);
-          }
-        });
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          entry.target.classList.add("is-visible");
+          io.unobserve(entry.target);
+          revealed += 1;
+        }
+        if (revealed >= total) io.disconnect();
       },
       { threshold: 0.12, rootMargin: "0px 0px -40px 0px" },
     );
 
-    items.forEach((el, i) => {
-      el.style.transitionDelay = `${Math.min(i * 60, 400)}ms`;
-      io.observe(el);
-    });
-
+    items.forEach((el) => io.observe(el));
     return () => io.disconnect();
   }, []);
 
