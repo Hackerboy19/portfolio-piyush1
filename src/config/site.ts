@@ -1,4 +1,4 @@
-import { Briefcase, Github, Linkedin, Mail, Twitter, type LucideIcon } from "lucide-react";
+import { Briefcase, Github, Linkedin, Mail, MessageCircle, Twitter, type LucideIcon } from "lucide-react";
 
 /**
  * Single source of truth for personal/site info.
@@ -59,7 +59,7 @@ export const siteConfig = {
   /** WhatsApp quick-contact (digits only, no + or spaces) for wa.me links. */
   whatsapp: {
     number: "918696698841",
-    defaultMessage: "Hi Piyush! I came across your portfolio and would love to connect.",
+    defaultMessage: "Hi Piyush! I'd love to connect about a project.",
   },
 } as const;
 
@@ -93,6 +93,13 @@ export const socialLinks: SocialLink[] = [
     href: "https://fortexatech.com/",
     icon: Briefcase,
     show: ["contact", "footer"],
+  },
+  {
+    id: "whatsapp",
+    label: "WhatsApp",
+    href: `https://wa.me/${siteConfig.whatsapp.number}?text=${encodeURIComponent(siteConfig.whatsapp.defaultMessage)}`,
+    icon: MessageCircle,
+    show: ["hero", "contact", "footer"],
   },
   // Example — uncomment to bring Twitter back:
   // { id: "twitter", label: "Twitter", href: "https://twitter.com/yourhandle", icon: Twitter },
