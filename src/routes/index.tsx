@@ -1,5 +1,5 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight, MessageCircle, Sparkles } from "lucide-react";
 import heroCharacter from "@/assets/hero-character.png";
 import { useTyping } from "@/hooks/use-typing";
 import { useReveal } from "@/hooks/use-reveal";
@@ -64,6 +64,16 @@ function Index() {
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Link>
             <CyberDownloadButton />
+            <a
+              href={`https://wa.me/${siteConfig.whatsapp.number}?text=${encodeURIComponent(siteConfig.whatsapp.defaultMessage)}`}
+              target="_blank"
+              rel="noreferrer"
+              aria-label={`Message ${siteConfig.shortName} on WhatsApp`}
+              className="group inline-flex items-center gap-2 rounded-full bg-[#25D366] px-6 py-3 text-sm font-semibold text-white shadow-soft transition-all hover:-translate-y-0.5 hover:bg-[#1ebe57] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#25D366] focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            >
+              <MessageCircle className="h-4 w-4 transition-transform group-hover:scale-110" />
+              WhatsApp
+            </a>
             <Link
               to="/contact"
               className="inline-flex items-center gap-2 rounded-full glass px-6 py-3 text-sm font-semibold shadow-soft transition-all hover:-translate-y-0.5"
