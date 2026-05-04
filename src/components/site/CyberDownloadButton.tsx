@@ -106,18 +106,6 @@ export function CyberDownloadButton({
           }}
         />
       )}
-    </motion.a>
-    {/* Screen-reader-only live region announcing label changes */}
-    <span
-      aria-live="polite"
-      aria-atomic="true"
-      className="sr-only"
-    >
-      {downloading ? "Downloading resume" : ""}
-    </span>
-    </>
-  );
-}
 
       {/* Glitch layers on hover */}
       <span className="relative inline-flex items-center gap-2">
@@ -157,5 +145,14 @@ export function CyberDownloadButton({
         />
       </span>
     </motion.a>
+    {/* Screen-reader-only live region announcing label changes */}
+    <span
+      aria-live="polite"
+      aria-atomic="true"
+      className="sr-only"
+    >
+      {downloading ? "Downloading resume" : ""}
+    </span>
+    </>
   );
 }
