@@ -46,6 +46,21 @@ export const siteConfig = {
   },
   /** @deprecated use siteConfig.resume.url */
   resumeUrl: "/piyush-mishra-resume.pdf",
+  /**
+   * Analytics toggles — flip these to enable/disable tracking providers
+   * across the site without editing component code.
+   */
+  analytics: {
+    gtag: true,
+    plausible: true,
+    dataLayer: true,
+    customEvent: true,
+  },
+  /** WhatsApp quick-contact (digits only, no + or spaces) for wa.me links. */
+  whatsapp: {
+    number: "918696698841",
+    defaultMessage: "Hi Piyush! I came across your portfolio and would love to connect.",
+  },
 } as const;
 
 /**

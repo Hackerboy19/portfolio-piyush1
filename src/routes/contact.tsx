@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Mail, MapPin, Phone, Send } from "lucide-react";
+import { Mail, MapPin, MessageCircle, Phone, Send } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { useReveal } from "@/hooks/use-reveal";
@@ -150,6 +150,16 @@ function ContactPage() {
               {status === "sending" ? "Sending…" : status === "sent" ? "Sent!" : "Send message"}
             </button>
             <CyberDownloadButton />
+            <a
+              href={`https://wa.me/${siteConfig.whatsapp.number}?text=${encodeURIComponent(siteConfig.whatsapp.defaultMessage)}`}
+              target="_blank"
+              rel="noreferrer"
+              aria-label={`Message ${siteConfig.shortName} on WhatsApp`}
+              className="group inline-flex items-center gap-2 rounded-full bg-[#25D366] px-6 py-3 text-sm font-semibold text-white shadow-soft transition-all hover:-translate-y-0.5 hover:bg-[#1ebe57] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#25D366] focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            >
+              <MessageCircle className="h-4 w-4 transition-transform group-hover:scale-110" />
+              WhatsApp
+            </a>
           </div>
         </form>
 
@@ -168,6 +178,17 @@ function ContactPage() {
                 <Phone className="h-4 w-4 text-primary" />
                 <a href={siteConfig.phoneHref} className="hover:text-foreground">
                   {siteConfig.phone}
+                </a>
+              </li>
+              <li className="flex items-center gap-2">
+                <MessageCircle className="h-4 w-4 text-primary" />
+                <a
+                  href={`https://wa.me/${siteConfig.whatsapp.number}?text=${encodeURIComponent(siteConfig.whatsapp.defaultMessage)}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="hover:text-foreground"
+                >
+                  WhatsApp chat
                 </a>
               </li>
               <li className="flex items-center gap-2">
