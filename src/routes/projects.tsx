@@ -16,11 +16,18 @@ export const Route = createFileRoute("/projects")({
   component: ProjectsPage,
 });
 
+type Category =
+  | "E-Commerce"
+  | "AI & SaaS"
+  | "Agency"
+  | "Spiritual"
+  | "Concepts";
+
 type Project = {
   title: string;
   desc: string;
   tags: string[];
-  category: "Web App" | "Design" | "Open Source";
+  category: Category;
   gradient: string;
   emoji: string;
   live?: string;
@@ -28,15 +35,72 @@ type Project = {
 };
 
 const PROJECTS: Project[] = [
-  { title: "Lumen Notes", desc: "Calm, offline-first writing app with markdown and themes.", tags: ["React", "PWA", "IndexedDB"], category: "Web App", gradient: "from-violet-300 via-fuchsia-200 to-pink-200", emoji: "📝", live: "#", code: "#" },
-  { title: "Pastel UI Kit", desc: "Open-source design system with 80+ accessible components.", tags: ["Design System", "Tailwind", "TS"], category: "Open Source", gradient: "from-rose-200 via-orange-200 to-amber-200", emoji: "🎨", code: "#" },
-  { title: "Sora Dashboard", desc: "Animated analytics dashboard with smooth chart transitions.", tags: ["React", "Charts", "Motion"], category: "Web App", gradient: "from-sky-200 via-cyan-200 to-emerald-200", emoji: "📊", live: "#" },
-  { title: "Cozy Cafe", desc: "E-commerce site for an indie cafe brand. Pastel aesthetic.", tags: ["Next.js", "Stripe", "CMS"], category: "Design", gradient: "from-amber-200 via-rose-200 to-pink-200", emoji: "☕", live: "#" },
-  { title: "Sakura Player", desc: "Minimal music player with bloom-style audio visuals.", tags: ["WebAudio", "Canvas", "TS"], category: "Web App", gradient: "from-pink-200 via-rose-200 to-purple-200", emoji: "🌸", live: "#", code: "#" },
-  { title: "Mochi Icons", desc: "Soft, rounded icon set — 200+ icons, MIT licensed.", tags: ["SVG", "Open Source"], category: "Open Source", gradient: "from-emerald-200 via-teal-200 to-sky-200", emoji: "🍡", code: "#" },
+  {
+    title: "Coitonic",
+    desc: "A cutting-edge e-commerce platform tailored for gym enthusiasts, offering high-performance activewear with a seamless UX, secure payments, and a sleek product showcase.",
+    tags: ["E-Commerce", "Payments", "UX"],
+    category: "E-Commerce",
+    gradient: "from-rose-200 via-orange-200 to-amber-200",
+    emoji: "🏋️",
+    live: "https://coitonic.com/",
+  },
+  {
+    title: "Consumable AI",
+    desc: "A robust AI platform that automates SEO/AEO growth, performs target-audience content research, and fixes technical site issues to drive organic marketing success.",
+    tags: ["AI", "SaaS", "SEO"],
+    category: "AI & SaaS",
+    gradient: "from-violet-300 via-fuchsia-200 to-pink-200",
+    emoji: "🤖",
+    live: "https://www.consumableai.com/",
+  },
+  {
+    title: "Fortexatech",
+    desc: "A premium digital agency website showcasing high-impact digital experiences across web development, mobile app engineering, and SEO services.",
+    tags: ["Agency", "Web", "Mobile"],
+    category: "Agency",
+    gradient: "from-sky-200 via-cyan-200 to-emerald-200",
+    emoji: "🏢",
+    live: "https://fortexatech.com/",
+  },
+  {
+    title: "Mahayagya",
+    desc: "A comprehensive digital platform for sacred Vedic events — live streaming of past events, digital donation portals, and a detailed community directory.",
+    tags: ["Streaming", "Donations", "Community"],
+    category: "Spiritual",
+    gradient: "from-amber-200 via-rose-200 to-pink-200",
+    emoji: "🕉️",
+    live: "http://mahayagya.com/",
+  },
+  {
+    title: "Shri Jeen Mata Mandir Trust",
+    desc: "Official portal for the revered Jeen Mata temple in Rajasthan. Integrates room booking, online prasad delivery, live darshan, and aarti participation.",
+    tags: ["Booking", "Live", "Temple"],
+    category: "Spiritual",
+    gradient: "from-pink-200 via-rose-200 to-purple-200",
+    emoji: "🛕",
+    live: "https://shrijeenmata.org/",
+  },
+  {
+    title: "UI/UX Concept Alpha",
+    desc: "A staging environment project demonstrating versatile frontend development skills, responsive design principles, and modern web architecture.",
+    tags: ["Frontend", "Responsive", "Concept"],
+    category: "Concepts",
+    gradient: "from-emerald-200 via-teal-200 to-sky-200",
+    emoji: "🎨",
+    live: "https://lightslategray-llama-254032.hostingersite.com/",
+  },
+  {
+    title: "UI/UX Concept Beta",
+    desc: "A conceptual web application showcasing dynamic layouts, interactive UI components, and seamless staging deployment.",
+    tags: ["UI", "Interactive", "Staging"],
+    category: "Concepts",
+    gradient: "from-indigo-200 via-sky-200 to-cyan-200",
+    emoji: "✨",
+    live: "https://lightslategray-nightingale-732988.hostingersite.com/",
+  },
 ];
 
-const FILTERS = ["All", "Web App", "Design", "Open Source"] as const;
+const FILTERS = ["All", "E-Commerce", "AI & SaaS", "Agency", "Spiritual", "Concepts"] as const;
 
 function ProjectsPage() {
   const ref = useReveal<HTMLDivElement>();
@@ -101,8 +165,14 @@ function ProjectsPage() {
               </div>
               <div className="mt-4 flex gap-2">
                 {p.live && (
-                  <a href={p.live} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline">
-                    <ExternalLink className="h-3.5 w-3.5" /> Live
+                  <a
+                    href={p.live}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label={`Visit ${p.title} website`}
+                    className="inline-flex items-center gap-1.5 rounded-full bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground shadow-soft transition-all hover:-translate-y-0.5 hover:shadow-glow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                  >
+                    <ExternalLink className="h-3.5 w-3.5" /> Visit Website
                   </a>
                 )}
                 {p.code && (
