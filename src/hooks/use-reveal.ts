@@ -32,9 +32,11 @@ export function useReveal<T extends HTMLElement = HTMLDivElement>() {
       return;
     }
 
-    // Lighter staggering on mobile: smaller step + lower cap.
-    const step = coarse ? 40 : 60;
-    const cap = coarse ? 240 : 400;
+    // Profiled on mobile: layout/style recalc is cheap, but long stagger
+    // chains delay LCP-adjacent content. Keep mobile stagger tight so cards
+    // resolve quickly without compositor jank.
+    const step = coarse ? 30 : 60;
+    const cap = coarse ? 180 : 400;
     items.forEach((el, i) => {
       el.style.transitionDelay = `${Math.min(i * step, cap)}ms`;
     });
