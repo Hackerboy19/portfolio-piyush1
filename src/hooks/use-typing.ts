@@ -25,9 +25,12 @@ export function useTyping(
 ) {
   const reduced = useMemo(prefersReducedMotion, []);
   const coarse = useMemo(isCoarsePointer, []);
-  // Slower cadence on touch devices = fewer state updates per second.
-  const scale = coarse ? 1.6 : 1;
-  const { typeMs = 80, deleteMs = 40, pauseMs = 1400 } = opts;
+  // Profiled on mobile (390x844): JS task time was negligible, but timer
+  // density still drives unnecessary re-renders. Slow mobile cadence further
+  // (1.9x) and bump base type interval slightly so each render does more work
+  // per tick — smoother perceived motion at lower frame churn.
+  const scale = coarse ? 1.9 : 1;
+  const { typeMs = 90, deleteMs = 55, pauseMs = 1600 } = opts;
   const [text, setText] = useState(reduced ? phrases[0] ?? "" : "");
   const [phraseIdx, setPhraseIdx] = useState(0);
   const [deleting, setDeleting] = useState(false);
