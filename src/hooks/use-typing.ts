@@ -29,8 +29,10 @@ export function useTyping(
   // density still drives unnecessary re-renders. Slow mobile cadence further
   // (1.9x) and bump base type interval slightly so each render does more work
   // per tick — smoother perceived motion at lower frame churn.
-  const scale = coarse ? 1.9 : 1;
-  const { typeMs = 90, deleteMs = 55, pauseMs = 1600 } = opts;
+  // Desktop Lighthouse re-tune: shorter pause + slightly faster typing reads
+  // smoother without raising main-thread work (one timer at a time).
+  const scale = coarse ? 1.8 : 1;
+  const { typeMs = 75, deleteMs = 45, pauseMs = 1400 } = opts;
   const [text, setText] = useState(reduced ? phrases[0] ?? "" : "");
   const [phraseIdx, setPhraseIdx] = useState(0);
   const [deleting, setDeleting] = useState(false);
