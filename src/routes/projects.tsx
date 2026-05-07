@@ -70,6 +70,7 @@ type Project = {
   category: Category;
   gradient: string;
   emoji: string;
+  image?: string;
   live?: string;
   code?: string;
 };
