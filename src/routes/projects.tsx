@@ -3,16 +3,56 @@ import { ExternalLink, Github } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useReveal } from "@/hooks/use-reveal";
 import { SectionHeader } from "@/components/site/SectionHeader";
+import { siteConfig } from "@/config/site";
 
 export const Route = createFileRoute("/projects")({
-  head: () => ({
-    meta: [
-      { title: "Projects — Piyush" },
-      { name: "description", content: "Selected work by Piyush: web apps, design systems, and creative experiments." },
-      { property: "og:title", content: "Projects — Piyush" },
-      { property: "og:description", content: "Selected work by Piyush: web apps, design systems, and creative experiments." },
-    ],
-  }),
+  head: () => {
+    const title = `Projects — ${siteConfig.name} | Web, SaaS & Design Work`;
+    const description =
+      "Explore selected projects by Piyush Mishra: e-commerce platforms, AI SaaS products, agency websites, and modern UI/UX concepts built with React and TypeScript.";
+    const url = `${siteConfig.url}/projects`;
+    return {
+      meta: [
+        { title },
+        { name: "description", content: description },
+        {
+          name: "keywords",
+          content:
+            "Piyush Mishra projects, React portfolio, web developer projects, SaaS, e-commerce, UI UX, frontend developer India",
+        },
+        { property: "og:type", content: "website" },
+        { property: "og:title", content: title },
+        { property: "og:description", content: description },
+        { property: "og:url", content: url },
+        { property: "og:image", content: siteConfig.ogImage },
+        { name: "twitter:card", content: "summary_large_image" },
+        { name: "twitter:title", content: title },
+        { name: "twitter:description", content: description },
+        { name: "twitter:image", content: siteConfig.ogImage },
+      ],
+      links: [{ rel: "canonical", href: url }],
+      scripts: [
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "CollectionPage",
+            name: title,
+            description,
+            url,
+            author: { "@type": "Person", name: siteConfig.name, url: siteConfig.url },
+            hasPart: PROJECTS.map((p) => ({
+              "@type": "CreativeWork",
+              name: p.title,
+              about: p.category,
+              description: p.desc,
+              url: p.live,
+            })),
+          }),
+        },
+      ],
+    };
+  },
   component: ProjectsPage,
 });
 
@@ -30,6 +70,7 @@ type Project = {
   category: Category;
   gradient: string;
   emoji: string;
+  image?: string;
   live?: string;
   code?: string;
 };
@@ -141,14 +182,25 @@ function ProjectsPage() {
         {visible.map((p) => (
           <article
             key={p.title}
-            className="reveal group overflow-hidden rounded-2xl glass shadow-soft transition-all hover:-translate-y-1 hover:shadow-glow"
+            className="reveal group overflow-hidden rounded-2xl glass shadow-soft transition-all hover:-translate-y-1 hover:shadow-glow [content-visibility:auto] [contain-intrinsic-size:420px]"
           >
             <div
               className={`relative aspect-[4/3] overflow-hidden bg-gradient-to-br ${p.gradient}`}
             >
-              <div className="absolute inset-0 grid place-items-center text-7xl transition-transform duration-500 group-hover:scale-110">
-                <span aria-hidden="true">{p.emoji}</span>
-              </div>
+              {p.image ? (
+                <img
+                  src={p.image}
+                  alt={`${p.title} preview`}
+                  loading="lazy"
+                  decoding="async"
+                  sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+              ) : (
+                <div className="absolute inset-0 grid place-items-center text-7xl transition-transform duration-500 group-hover:scale-110">
+                  <span aria-hidden="true">{p.emoji}</span>
+                </div>
+              )}
             </div>
             <div className="p-5">
               <div className="mb-2 flex items-center justify-between gap-2">
