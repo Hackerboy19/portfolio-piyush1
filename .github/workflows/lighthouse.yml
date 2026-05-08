@@ -5,15 +5,32 @@ on:
     branches: ["main"]
   pull_request:
     branches: ["main"]
+  schedule:
+    # Nightly mobile budget run
+    - cron: "17 3 * * *"
+    # Monthly baseline refresh (1st of month at 04:00 UTC)
+    - cron: "0 4 1 * *"
   workflow_dispatch:
+    inputs:
+      refresh_baseline:
+        description: "Force-refresh the perf baseline"
+        type: boolean
+        default: false
 
 permissions:
   contents: read
   pull-requests: write
+  checks: write
+
+concurrency:
+  group: lhci-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   lighthouse:
     runs-on: ubuntu-latest
+    env:
+      IS_BASELINE_RUN: ${{ github.event.schedule == '0 4 1 * *' || github.event.inputs.refresh_baseline == 'true' }}
     steps:
       - uses: actions/checkout@v4
 
@@ -21,6 +38,16 @@ jobs:
         uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
+
+      - name: Cache Bun + node_modules
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.bun/install/cache
+            node_modules
+          key: ${{ runner.os }}-bun-${{ hashFiles('bun.lockb', 'bun.lock', 'package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-bun-
 
       - name: Install dependencies
         run: bun install --frozen-lockfile
@@ -30,6 +57,22 @@ jobs:
 
       - name: Install Lighthouse CI
         run: npm install -g @lhci/cli@0.14.x
+
+      - name: Restore Lighthouse history
+        uses: actions/cache@v4
+        with:
+          path: .lhci-history
+          key: lhci-history-${{ github.ref_name }}-${{ github.run_id }}
+          restore-keys: |
+            lhci-history-${{ github.ref_name }}-
+            lhci-history-main-
+
+      - name: Restore Lighthouse baseline
+        if: env.IS_BASELINE_RUN != 'true'
+        uses: actions/cache@v4
+        with:
+          path: .lhci-baseline
+          key: lhci-baseline-v1
 
       - name: Run Lighthouse CI (mobile + perf budgets)
         id: lhci
@@ -41,18 +84,33 @@ jobs:
         env:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
 
+      - name: Update history + baseline
+        if: always()
+        run: node scripts/lhci-history.mjs
+        env:
+          IS_BASELINE_RUN: ${{ env.IS_BASELINE_RUN }}
+          GIT_SHA: ${{ github.sha }}
+          GIT_REF: ${{ github.ref_name }}
+
       - name: Build PR comment from assertion results
         if: always()
         run: node scripts/lhci-comment.mjs
+
+      - name: Emit GitHub annotations for failing audits
+        if: always()
+        run: node scripts/lhci-annotate.mjs
 
       - name: Upload Lighthouse reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: lighthouse-reports
-          path: .lighthouseci
+          name: lighthouse-reports-${{ github.run_id }}
+          path: |
+            .lighthouseci
+            .lhci-history
+            lhci-comment.md
           if-no-files-found: ignore
-          retention-days: 14
+          retention-days: 30
 
       - name: Sticky PR comment with budget failures
         if: always() && github.event_name == 'pull_request'
