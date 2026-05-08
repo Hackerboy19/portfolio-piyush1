@@ -49,9 +49,13 @@ export const Route = createRootRoute({
       { property: "og:url", content: siteConfig.url },
       { property: "og:image", content: siteConfig.ogImage },
       { property: "og:image:alt", content: `${siteConfig.name} — ${siteConfig.role}` },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      { property: "og:image:type", content: "image/png" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: siteConfig.twitterHandle },
       { name: "twitter:image", content: siteConfig.ogImage },
+      { name: "twitter:image:alt", content: `${siteConfig.name} — ${siteConfig.role}` },
       { name: "theme-color", content: "#7c5cff" },
       // Resume — SEO + social discoverability for the downloadable PDF
       { name: "resume:title", content: `${siteConfig.name} — Resume (PDF)` },
