@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { useReveal } from "@/hooks/use-reveal";
 import { SectionHeader } from "@/components/site/SectionHeader";
 import { siteConfig } from "@/config/site";
+import { SmartImage, EMPTY_BLUR } from "@/components/site/SmartImage";
 
 export const Route = createFileRoute("/projects")({
   head: () => {
@@ -188,13 +189,13 @@ function ProjectsPage() {
               className={`relative aspect-[4/3] overflow-hidden bg-gradient-to-br ${p.gradient}`}
             >
               {p.image ? (
-                <img
+                <SmartImage
                   src={p.image}
                   alt={`${p.title} preview`}
-                  loading="lazy"
-                  decoding="async"
-                  sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  blurDataURL={EMPTY_BLUR}
+                  aspectRatio="4 / 3"
+                  className="absolute inset-0 h-full w-full"
+                  imgClassName="group-hover:scale-105"
                 />
               ) : (
                 <div className="absolute inset-0 grid place-items-center text-7xl transition-transform duration-500 group-hover:scale-110">
