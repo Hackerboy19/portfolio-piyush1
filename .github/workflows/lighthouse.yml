@@ -7,6 +7,10 @@ on:
     branches: ["main"]
   workflow_dispatch:
 
+permissions:
+  contents: read
+  pull-requests: write
+
 jobs:
   lighthouse:
     runs-on: ubuntu-latest
@@ -28,11 +32,45 @@ jobs:
         run: npm install -g @lhci/cli@0.14.x
 
       - name: Run Lighthouse CI (mobile + perf budgets)
-        run: lhci autorun --config=./lighthouserc.json
+        id: lhci
+        run: |
+          set +e
+          lhci autorun --config=./lighthouserc.json
+          echo "exit_code=$?" >> "$GITHUB_OUTPUT"
+          exit 0
         env:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+
+      - name: Build PR comment from assertion results
+        if: always()
+        run: node scripts/lhci-comment.mjs
+
+      - name: Upload Lighthouse reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-reports
+          path: .lighthouseci
+          if-no-files-found: ignore
+          retention-days: 14
+
+      - name: Sticky PR comment with budget failures
+        if: always() && github.event_name == 'pull_request'
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: lighthouse-ci
+          path: lhci-comment.md
 
       - name: Share preview meta check
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: node scripts/check-share-preview.mjs
         continue-on-error: true
+
+      - name: Re-assert Lighthouse budgets
+        if: always()
+        run: |
+          code="${{ steps.lhci.outputs.exit_code }}"
+          if [ "$code" != "0" ]; then
+            echo "Lighthouse CI failed with exit code $code"
+            exit "$code"
+          fi
