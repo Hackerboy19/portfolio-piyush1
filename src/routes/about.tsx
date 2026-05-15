@@ -3,6 +3,7 @@ import { Coffee, Heart, MapPin, Sparkles } from "lucide-react";
 import { useReveal } from "@/hooks/use-reveal";
 import { SectionHeader } from "@/components/site/SectionHeader";
 import heroCharacter from "@/assets/hero-character.png";
+import { siteConfig } from "@/config/site";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -11,7 +12,9 @@ export const Route = createFileRoute("/about")({
       { name: "description", content: "Learn about Piyush: my story, values, and what I love to build on the web." },
       { property: "og:title", content: "About — Piyush" },
       { property: "og:description", content: "Learn about Piyush: my story, values, and what I love to build on the web." },
+      { property: "og:url", content: `${siteConfig.url}/about` },
     ],
+    links: [{ rel: "canonical", href: `${siteConfig.url}/about` }],
   }),
   component: AboutPage,
 });
@@ -21,6 +24,7 @@ function AboutPage() {
   return (
     <div ref={ref} className="mx-auto max-w-6xl px-4 py-16">
       <SectionHeader
+        as="h1"
         eyebrow="About"
         title={<>Hi, I&rsquo;m <span className="gradient-text">Piyush</span></>}
         description="A creative developer with a soft spot for animation, calm UI, and tiny delightful details."

@@ -28,6 +28,7 @@ export const Route = createFileRoute("/contact")({
         content: `Get in touch with ${siteConfig.shortName} for collaborations or freelance work.`,
       },
     ],
+    links: [{ rel: "canonical", href: `${siteConfig.url}/contact` }],
   }),
   component: ContactPage,
 });
@@ -85,6 +86,7 @@ function ContactPage() {
   return (
     <div ref={ref} className="mx-auto max-w-6xl px-4 py-16">
       <SectionHeader
+        as="h1"
         eyebrow="Contact"
         title={<>Let&rsquo;s build something <span className="gradient-text">together</span></>}
         description="Got a project, idea, or just want to say hi? Drop a message — I read every one."
@@ -97,9 +99,10 @@ function ContactPage() {
           className="reveal md:col-span-3 rounded-2xl glass p-6 shadow-soft sm:p-8"
         >
           <div className="grid gap-4 sm:grid-cols-2">
-            <label className="block">
+            <label htmlFor="contact-name" className="block">
               <span className="text-sm font-medium">Your name</span>
               <input
+                id="contact-name"
                 name="name"
                 required
                 maxLength={100}
@@ -107,9 +110,10 @@ function ContactPage() {
                 className="mt-1.5 w-full rounded-xl border border-border bg-background/60 px-4 py-2.5 text-sm shadow-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/30"
               />
             </label>
-            <label className="block">
+            <label htmlFor="contact-email" className="block">
               <span className="text-sm font-medium">Email</span>
               <input
+                id="contact-email"
                 name="email"
                 type="email"
                 required
@@ -119,9 +123,10 @@ function ContactPage() {
               />
             </label>
           </div>
-          <label className="mt-4 block">
+          <label htmlFor="contact-message" className="mt-4 block">
             <span className="text-sm font-medium">Message</span>
             <textarea
+              id="contact-message"
               name="message"
               required
               rows={6}
