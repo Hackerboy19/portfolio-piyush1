@@ -156,6 +156,7 @@ function ProjectsPage() {
   return (
     <div ref={ref} className="mx-auto max-w-6xl px-4 py-16">
       <SectionHeader
+        as="h1"
         eyebrow="Projects"
         title={<>Selected <span className="gradient-text">work</span></>}
         description="A small slice of recent things I've designed, built, or shipped."

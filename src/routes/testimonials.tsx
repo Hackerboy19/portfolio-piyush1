@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Quote } from "lucide-react";
 import { useReveal } from "@/hooks/use-reveal";
 import { SectionHeader } from "@/components/site/SectionHeader";
+import { siteConfig } from "@/config/site";
 
 export const Route = createFileRoute("/testimonials")({
   head: () => ({
@@ -10,6 +11,27 @@ export const Route = createFileRoute("/testimonials")({
       { name: "description", content: "Kind words from teammates and clients Piyush has worked with." },
       { property: "og:title", content: "Testimonials — Piyush" },
       { property: "og:description", content: "Kind words from teammates and clients Piyush has worked with." },
+      { property: "og:url", content: `${siteConfig.url}/testimonials` },
+    ],
+    links: [{ rel: "canonical", href: `${siteConfig.url}/testimonials` }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify(
+          QUOTES.map((q) => ({
+            "@context": "https://schema.org",
+            "@type": "Review",
+            reviewBody: q.text,
+            author: { "@type": "Person", name: q.name, jobTitle: q.role },
+            reviewRating: { "@type": "Rating", ratingValue: "5", bestRating: "5" },
+            itemReviewed: {
+              "@type": "Person",
+              name: siteConfig.name,
+              url: siteConfig.url,
+            },
+          })),
+        ),
+      },
     ],
   }),
   component: TestimonialsPage,
@@ -29,6 +51,7 @@ function TestimonialsPage() {
   return (
     <div ref={ref} className="mx-auto max-w-6xl px-4 py-16">
       <SectionHeader
+        as="h1"
         eyebrow="Testimonials"
         title={<>Kind <span className="gradient-text">words</span></>}
         description="What people I've worked with say."

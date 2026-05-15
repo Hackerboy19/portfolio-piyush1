@@ -18,6 +18,7 @@ export const Route = createFileRoute("/")({
       { name: "twitter:title", content: `${siteConfig.name} — ${siteConfig.role}` },
       { name: "twitter:description", content: siteConfig.description },
     ],
+    links: [{ rel: "canonical", href: siteConfig.url }],
   }),
   component: Index,
 });

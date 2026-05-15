@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { useReveal } from "@/hooks/use-reveal";
 import { SectionHeader } from "@/components/site/SectionHeader";
+import { siteConfig } from "@/config/site";
 
 export const Route = createFileRoute("/services")({
   head: () => ({
@@ -27,6 +28,37 @@ export const Route = createFileRoute("/services")({
         property: "og:description",
         content:
           "Services by Piyush: web design, frontend engineering, Android & iOS app development, SEO, and digital marketing.",
+      },
+      { property: "og:url", content: `${siteConfig.url}/services` },
+    ],
+    links: [{ rel: "canonical", href: `${siteConfig.url}/services` }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "ProfessionalService",
+          name: `${siteConfig.name} — Services`,
+          url: `${siteConfig.url}/services`,
+          provider: {
+            "@type": "Person",
+            name: siteConfig.name,
+            url: siteConfig.url,
+          },
+          areaServed: "Worldwide",
+          hasOfferCatalog: {
+            "@type": "OfferCatalog",
+            name: "Services",
+            itemListElement: SERVICES.map((s) => ({
+              "@type": "Offer",
+              itemOffered: {
+                "@type": "Service",
+                name: s.title,
+                description: s.desc,
+              },
+            })),
+          },
+        }),
       },
     ],
   }),
@@ -50,6 +82,7 @@ function ServicesPage() {
   return (
     <div ref={ref} className="mx-auto max-w-6xl px-4 py-16">
       <SectionHeader
+        as="h1"
         eyebrow="Services"
         title={<>What I can <span className="gradient-text">build for you</span></>}
         description="Pick what you need — or let's talk and shape something together."
