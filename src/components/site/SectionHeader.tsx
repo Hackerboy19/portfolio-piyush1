@@ -5,12 +5,15 @@ export function SectionHeader({
   title,
   description,
   align = "center",
+  as = "h2",
 }: {
   eyebrow?: string;
   title: ReactNode;
   description?: string;
   align?: "center" | "left";
+  as?: "h1" | "h2";
 }) {
+  const Heading = as;
   return (
     <div
       className={`reveal mb-10 ${align === "center" ? "mx-auto max-w-2xl text-center" : "max-w-2xl"}`}
@@ -20,7 +23,7 @@ export function SectionHeader({
           {eyebrow}
         </span>
       )}
-      <h2 className="mt-3 text-3xl font-bold sm:text-4xl md:text-5xl">{title}</h2>
+      <Heading className="mt-3 text-3xl font-bold sm:text-4xl md:text-5xl">{title}</Heading>
       {description && (
         <p className="mt-3 text-base text-muted-foreground sm:text-lg">{description}</p>
       )}
