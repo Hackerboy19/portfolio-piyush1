@@ -1,0 +1,13 @@
+# Piyush Mishra — Portfolio
+
+> Portfolio of Piyush Mishra, a creative developer and designer building calm, fast, animated web experiences with React and TypeScript.
+
+## Pages
+
+- [Home](/): Introduction, what I do, and quick links.
+- [About](/about): My story, values, and background.
+- [Services](/services): Web design, frontend engineering, mobile apps, SEO, and digital marketing.
+- [Skills](/skills): Tech stack and core skills.
+- [Projects](/projects): Selected e-commerce, AI/SaaS, agency, and concept work.
+- [Testimonials](/testimonials): Kind words from teammates and clients.
+- [Contact](/contact): Email, WhatsApp, and project inquiry form.
