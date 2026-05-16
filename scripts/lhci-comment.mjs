@@ -12,14 +12,30 @@ const HISTORY_DIR = ".lhci-history";
 const BASELINE_FILE = ".lhci-baseline/baseline.json";
 const OUT_FILE = "lhci-comment.md";
 
-const HIGHLIGHT = new Set([
-  "categories:performance",
-  "largest-contentful-paint",
-  "cumulative-layout-shift",
-  "total-blocking-time",
-  "first-contentful-paint",
-  "speed-index",
-]);
+function readJsonSafe(path, fallback) {
+  try { return JSON.parse(readFileSync(path, "utf8")); } catch { return fallback; }
+}
+const TRACKING = readJsonSafe("lhci-tracking.json", {
+  audits: [
+    "largest-contentful-paint",
+    "cumulative-layout-shift",
+    "total-blocking-time",
+    "first-contentful-paint",
+    "speed-index",
+  ],
+  categories: ["performance"],
+  highlight: [
+    "categories:performance",
+    "largest-contentful-paint",
+    "cumulative-layout-shift",
+    "total-blocking-time",
+  ],
+  regressionThresholds: { "cumulative-layout-shift": 0.005, _defaultMs: 25, _defaultScore: 0.01 },
+});
+const HIGHLIGHT = new Set(TRACKING.highlight || []);
+const TRACKED = TRACKING.audits || [];
+const TRACKED_CATEGORIES = TRACKING.categories || [];
+const THRESH = TRACKING.regressionThresholds || {};
 
 const PRETTY = {
   "categories:performance": "Performance score",
@@ -45,9 +61,13 @@ function delta(audit, current, ref) {
   if (typeof current !== "number" || typeof ref !== "number") return "—";
   const d = current - ref;
   const sign = d > 0 ? "+" : "";
-  // For categories, higher is better → invert arrow logic.
   const higherIsBetter = audit.startsWith("categories:");
-  const regressed = higherIsBetter ? d < -0.01 : d > (audit === "cumulative-layout-shift" ? 0.005 : 25);
+  const scoreThresh = typeof THRESH._defaultScore === "number" ? THRESH._defaultScore : 0.01;
+  const msThresh = typeof THRESH._defaultMs === "number" ? THRESH._defaultMs : 25;
+  const specific = typeof THRESH[audit] === "number" ? THRESH[audit] : null;
+  const regressed = higherIsBetter
+    ? d < -(specific ?? scoreThresh)
+    : d > (specific ?? msThresh);
   const arrow = Math.abs(d) < 1e-6 ? "▪" : regressed ? "🔺" : "🟢";
   return `${arrow} ${sign}${fmt(audit, d)}`;
 }
@@ -98,13 +118,16 @@ function loadBaseline() {
   return readJson(BASELINE_FILE);
 }
 
-const TRACKED = [
-  "largest-contentful-paint",
-  "cumulative-layout-shift",
-  "total-blocking-time",
-  "first-contentful-paint",
-  "speed-index",
-];
+function refLink(ref) {
+  if (!ref) return "";
+  if (ref.runUrl) {
+    const sha = ref.sha ? ` \`${ref.sha.slice(0, 7)}\`` : "";
+    return ` — [run #${ref.runId}](${ref.runUrl})${sha}`;
+  }
+  if (ref.sha) return ` — \`${ref.sha.slice(0, 7)}\``;
+  if (ref.timestamp) return ` — ${ref.timestamp.slice(0, 10)}`;
+  return "";
+}
 
 function renderComparison(title, current, ref) {
   if (!ref?.urls) return "";
@@ -119,12 +142,12 @@ function renderComparison(title, current, ref) {
       if (typeof c !== "number" || typeof r !== "number") continue;
       rows.push(`| ${PRETTY[id] || id} | ${fmt(id, r)} | ${fmt(id, c)} | ${delta(id, c, r)} |`);
     }
-    const perfC = cur.categories?.performance;
-    const perfR = refUrl.categories?.performance;
-    if (typeof perfC === "number" && typeof perfR === "number") {
-      rows.unshift(
-        `| ${PRETTY["categories:performance"]} | ${fmt("categories:performance", perfR)} | ${fmt("categories:performance", perfC)} | ${delta("categories:performance", perfC, perfR)} |`,
-      );
+    for (const cat of TRACKED_CATEGORIES) {
+      const c = cur.categories?.[cat];
+      const r = refUrl.categories?.[cat];
+      if (typeof c !== "number" || typeof r !== "number") continue;
+      const key = `categories:${cat}`;
+      rows.unshift(`| ${PRETTY[key] || `${cat} score`} | ${fmt(key, r)} | ${fmt(key, c)} | ${delta(key, c, r)} |`);
     }
     if (rows.length === 0) continue;
     lines.push(
@@ -132,7 +155,7 @@ function renderComparison(title, current, ref) {
     );
   }
   if (lines.length === 0) return "";
-  return `\n### ${title}\n\n${lines.join("\n\n")}\n`;
+  return `\n### ${title}${refLink(ref)}\n\n${lines.join("\n\n")}\n`;
 }
 
 function loadReportLinks() {
