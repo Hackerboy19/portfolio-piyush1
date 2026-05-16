@@ -1,0 +1,22 @@
+{
+  "$comment": "Controls which metrics appear in the previous-run and baseline delta tables. Edit freely; both lhci-history.mjs and lhci-comment.mjs read this file.",
+  "audits": [
+    "first-contentful-paint",
+    "largest-contentful-paint",
+    "total-blocking-time",
+    "cumulative-layout-shift",
+    "speed-index"
+  ],
+  "categories": ["performance", "accessibility", "best-practices", "seo"],
+  "highlight": [
+    "categories:performance",
+    "largest-contentful-paint",
+    "cumulative-layout-shift",
+    "total-blocking-time"
+  ],
+  "regressionThresholds": {
+    "cumulative-layout-shift": 0.005,
+    "_defaultMs": 25,
+    "_defaultScore": 0.01
+  }
+}
