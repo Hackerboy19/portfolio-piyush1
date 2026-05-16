@@ -13,7 +13,14 @@ try { results = JSON.parse(readFileSync(path, "utf8")); }
 catch { process.exit(0); }
 if (!Array.isArray(results) || results.length === 0) process.exit(0);
 
-const FILE = "lighthouserc.json";
+// GitHub annotations require a path that exists in the repo. lighthouserc.json
+// is where budgets live, so annotations link reviewers straight to the budget
+// definition. Fall back to README.md if the config moves or is renamed.
+const FILE = existsSync("lighthouserc.json")
+  ? "lighthouserc.json"
+  : existsSync("README.md")
+    ? "README.md"
+    : ".github/workflows/lighthouse.yml";
 
 function fmt(audit, value) {
   if (typeof value !== "number") return String(value ?? "—");
@@ -28,8 +35,10 @@ for (const r of results) {
   const op = r.operator || "";
   const expected = fmt(r.auditId, r.expected);
   const actual = fmt(r.auditId, r.actual);
+  // Escape per GitHub workflow command spec: %25, %0A, %0D, and ',' in props.
+  const esc = (s) => String(s).replace(/%/g, "%25").replace(/\r/g, "%0D").replace(/\n/g, "%0A");
+  const escProp = (s) => esc(s).replace(/,/g, "%2C").replace(/:/g, "%3A");
   const title = `Lighthouse budget: ${r.auditId}`;
   const msg = `${r.url} — expected ${op} ${expected}, got ${actual}`;
-  // GitHub workflow command — file points reviewers at the budget config.
-  console.log(`::${level} file=${FILE},title=${title}::${msg}`);
+  console.log(`::${level} file=${FILE},title=${escProp(title)}::${esc(msg)}`);
 }
