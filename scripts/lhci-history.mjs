@@ -12,14 +12,21 @@ const BASELINE_DIR = ".lhci-baseline";
 const BASELINE_FILE = join(BASELINE_DIR, "baseline.json");
 const MAX_HISTORY = 50;
 
-const TRACKED_AUDITS = [
-  "first-contentful-paint",
-  "largest-contentful-paint",
-  "total-blocking-time",
-  "cumulative-layout-shift",
-  "speed-index",
-];
-const TRACKED_CATEGORIES = ["performance", "accessibility", "best-practices", "seo"];
+function readJsonSafe(path, fallback) {
+  try { return JSON.parse(readFileSync(path, "utf8")); } catch { return fallback; }
+}
+const TRACKING = readJsonSafe("lhci-tracking.json", {
+  audits: [
+    "first-contentful-paint",
+    "largest-contentful-paint",
+    "total-blocking-time",
+    "cumulative-layout-shift",
+    "speed-index",
+  ],
+  categories: ["performance", "accessibility", "best-practices", "seo"],
+});
+const TRACKED_AUDITS = TRACKING.audits || [];
+const TRACKED_CATEGORIES = TRACKING.categories || [];
 
 function readJson(path, fallback = null) {
   try { return JSON.parse(readFileSync(path, "utf8")); } catch { return fallback; }
@@ -50,6 +57,11 @@ function summarizeRun() {
   return {
     sha: process.env.GIT_SHA || null,
     ref: process.env.GIT_REF || null,
+    runId: process.env.GIT_RUN_ID || null,
+    repo: process.env.GIT_REPO || null,
+    runUrl: process.env.GIT_RUN_ID && process.env.GIT_REPO
+      ? `https://github.com/${process.env.GIT_REPO}/actions/runs/${process.env.GIT_RUN_ID}`
+      : null,
     timestamp: new Date().toISOString(),
     urls: byUrl,
   };

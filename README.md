@@ -11,3 +11,10 @@
 - **PR comments**: a single sticky comment shows failing budgets, deltas vs the previous run, and deltas vs the monthly baseline.
 - **Annotations**: failing audits appear as inline GitHub check annotations pointing at `lighthouserc.json`.
 - **Manual baseline refresh**: run the workflow via *Actions → Lighthouse CI → Run workflow* with `refresh_baseline = true`.
+- **Trend chart**: each run renders `.lhci-history/trend.svg` (included in the workflow artifact) plotting the metrics in `lhci-tracking.json` across the most recent runs.
+- **Tracked metrics**: edit `lhci-tracking.json` to choose which audits/categories appear in the previous-run and baseline delta tables, and to tune per-metric regression thresholds.
+- **PR comment links**: the sticky comment's "Vs previous run" and "Vs monthly baseline" sections link straight to the GitHub Actions run that produced the reference data.
+
+### Activating the badge
+
+The badge above uses `OWNER/REPO` as a placeholder. After connecting this project to GitHub, replace both occurrences with your actual `<owner>/<repo>` slug (e.g. `acme/portfolio`). The badge resolves via `https://github.com/<owner>/<repo>/actions/workflows/lighthouse.yml/badge.svg?branch=main` and shows the latest run status on `main`.

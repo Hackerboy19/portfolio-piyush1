@@ -91,6 +91,12 @@ jobs:
           IS_BASELINE_RUN: ${{ env.IS_BASELINE_RUN }}
           GIT_SHA: ${{ github.sha }}
           GIT_REF: ${{ github.ref_name }}
+          GIT_RUN_ID: ${{ github.run_id }}
+          GIT_REPO: ${{ github.repository }}
+
+      - name: Render trend chart
+        if: always()
+        run: node scripts/lhci-trend.mjs
 
       - name: Build PR comment from assertion results
         if: always()
@@ -109,6 +115,7 @@ jobs:
             .lighthouseci
             .lhci-history
             lhci-comment.md
+            .lhci-history/trend.svg
           if-no-files-found: ignore
           retention-days: 30
 
