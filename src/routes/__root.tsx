@@ -44,6 +44,7 @@ export const Route = createRootRoute({
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { name: "author", content: siteConfig.name },
       { name: "description", content: siteConfig.description },
+      { name: "google-site-verification", content: "rdSLnLDcbI7n1hlXBuunW1CoM_GYpPrG2gdpn3IMDo8" },
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: siteConfig.brand },
       { property: "og:url", content: siteConfig.url },
