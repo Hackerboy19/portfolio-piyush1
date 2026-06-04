@@ -1,6 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Mail, MapPin, MessageCircle, Phone, Send } from "lucide-react";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import { toast } from "sonner";
 import { useReveal } from "@/hooks/use-reveal";
 import { SectionHeader } from "@/components/site/SectionHeader";
@@ -36,52 +39,47 @@ export const Route = createFileRoute("/contact")({
 function ContactPage() {
   const ref = useReveal<HTMLDivElement>();
   const [status, setStatus] = useState<"idle" | "sending" | "sent">("idle");
-  const [error, setError] = useState<string | null>(null);
   const links = socialLinksFor("contact");
 
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formEl = e.currentTarget;
-    const form = new FormData(formEl);
-    const name = String(form.get("name") || "").trim();
-    const email = String(form.get("email") || "").trim();
-    const message = String(form.get("message") || "").trim();
+  const schema = z.object({
+    name: z.string().trim().min(1, "Name is required").max(100),
+    email: z.string().trim().email("Please enter a valid email").max(255),
+    message: z.string().trim().min(1, "Message is required").max(5000),
+  });
+  type FormValues = z.infer<typeof schema>;
 
-    if (!name || !email || !message) {
-      setError("Please fill in every field.");
-      return;
-    }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      setError("Please enter a valid email.");
-      return;
-    }
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<FormValues>({
+    resolver: zodResolver(schema),
+    mode: "onBlur",
+  });
 
-    setError(null);
+  const onSubmit = handleSubmit(async (values) => {
     setStatus("sending");
     try {
       const res = await submitContactMessage({
-        data: { name, email, message, source: "contact-page" },
+        data: { ...values, source: "contact-page" },
       });
       if (res.ok) {
         setStatus("sent");
         toast.success("Message sent!", {
           description: "Thanks for reaching out — I'll get back to you soon.",
         });
-        formEl.reset();
+        reset();
       } else {
         setStatus("idle");
-        setError(res.error);
         toast.error("Could not send message", { description: res.error });
       }
     } catch (err) {
-      console.error(err);
       setStatus("idle");
-      const msg =
-        err instanceof Error ? err.message : "Something went wrong. Please try again.";
-      setError(msg);
+      const msg = err instanceof Error ? err.message : "Something went wrong. Please try again.";
       toast.error("Could not send message", { description: msg });
     }
-  };
+  });
 
   return (
     <div ref={ref} className="mx-auto max-w-6xl px-4 py-16">
@@ -97,48 +95,52 @@ function ContactPage() {
         <form
           onSubmit={onSubmit}
           className="reveal md:col-span-3 rounded-2xl glass p-6 shadow-soft sm:p-8"
+          noValidate
         >
           <div className="grid gap-4 sm:grid-cols-2">
             <label htmlFor="contact-name" className="block">
               <span className="text-sm font-medium">Your name</span>
               <input
                 id="contact-name"
-                name="name"
-                required
-                maxLength={100}
                 placeholder="Hayao Miyazaki"
+                aria-invalid={!!errors.name}
+                {...register("name")}
                 className="mt-1.5 w-full rounded-xl border border-border bg-background/60 px-4 py-2.5 text-sm shadow-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/30"
               />
+              {errors.name && (
+                <span className="mt-1 block text-xs text-destructive">{errors.name.message}</span>
+              )}
             </label>
             <label htmlFor="contact-email" className="block">
               <span className="text-sm font-medium">Email</span>
               <input
                 id="contact-email"
-                name="email"
                 type="email"
-                required
-                maxLength={255}
                 placeholder="hi@example.com"
+                aria-invalid={!!errors.email}
+                {...register("email")}
                 className="mt-1.5 w-full rounded-xl border border-border bg-background/60 px-4 py-2.5 text-sm shadow-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/30"
               />
+              {errors.email && (
+                <span className="mt-1 block text-xs text-destructive">{errors.email.message}</span>
+              )}
             </label>
           </div>
           <label htmlFor="contact-message" className="mt-4 block">
             <span className="text-sm font-medium">Message</span>
             <textarea
               id="contact-message"
-              name="message"
-              required
               rows={6}
-              maxLength={5000}
               placeholder="Tell me a bit about what you're working on…"
+              aria-invalid={!!errors.message}
+              {...register("message")}
               className="mt-1.5 w-full resize-none rounded-xl border border-border bg-background/60 px-4 py-3 text-sm shadow-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/30"
             />
+            {errors.message && (
+              <span className="mt-1 block text-xs text-destructive">{errors.message.message}</span>
+            )}
           </label>
 
-          {error && (
-            <p role="alert" className="mt-3 text-sm text-destructive">{error}</p>
-          )}
           {status === "sent" && (
             <p className="mt-3 text-sm font-medium text-primary">
               Thanks! Your message is on its way ✨

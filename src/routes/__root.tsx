@@ -11,6 +11,7 @@ import appCss from "../styles.css?url";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { AnimatedBackground } from "@/components/site/AnimatedBackground";
+import { PageTransition } from "@/components/site/PageTransition";
 import { ThemeProvider, themeBootScript } from "@/hooks/use-theme";
 import { Toaster } from "@/components/ui/sonner";
 import { siteConfig } from "@/config/site";
@@ -167,7 +168,9 @@ function RootComponent() {
       <div className="flex min-h-screen flex-col">
         <Navbar />
         <main className="flex-1">
-          <Outlet />
+          <PageTransition>
+            <Outlet />
+          </PageTransition>
         </main>
         <Footer />
       </div>
