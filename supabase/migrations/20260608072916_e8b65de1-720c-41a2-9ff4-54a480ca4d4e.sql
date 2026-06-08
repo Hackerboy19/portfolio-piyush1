@@ -1,0 +1,1 @@
+CREATE POLICY "Deny read access to contact submissions" ON public.contact_submissions FOR SELECT TO anon, authenticated USING (false);
