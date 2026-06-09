@@ -92,7 +92,7 @@ export const socialLinks: SocialLink[] = [
     label: "Fortexa Tech",
     href: "https://fortexatech.com/",
     icon: Briefcase,
-    show: ["contact", "footer"],
+    show: ["hero", "contact", "footer"],
   },
   {
     id: "whatsapp",
