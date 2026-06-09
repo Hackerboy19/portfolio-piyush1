@@ -1,6 +1,5 @@
 import {
   Outlet,
-  Link,
   ScriptOnce,
   createRootRoute,
   HeadContent,
