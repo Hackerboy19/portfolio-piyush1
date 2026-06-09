@@ -1,8 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Quote } from "lucide-react";
 import { useReveal } from "@/hooks/use-reveal";
 import { SectionHeader } from "@/components/site/SectionHeader";
 import { siteConfig } from "@/config/site";
+import { TestimonialCard } from "@/components/testimonials/TestimonialCard";
+import type { Testimonial } from "@/types";
 
 export const Route = createFileRoute("/testimonials")({
   head: () => ({
@@ -37,7 +38,7 @@ export const Route = createFileRoute("/testimonials")({
   component: TestimonialsPage,
 });
 
-const QUOTES = [
+const QUOTES: Testimonial[] = [
   { name: "Mika S.", role: "Product Lead, Lumen", text: "Piyush shipped a calm, fast UI that our users keep mentioning. Easy to work with and obsessed with the details.", avatar: "M" },
   { name: "Jonas T.", role: "Founder, Cozy Cafe", text: "Beautiful brand site, and it actually loads fast. Sales jumped after launch — couldn't be happier.", avatar: "J" },
   { name: "Priya K.", role: "Engineering Manager", text: "One of the strongest frontend collaborators I've worked with. Thoughtful, kind, and incredibly fast.", avatar: "P" },
@@ -58,24 +59,7 @@ function TestimonialsPage() {
       />
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {QUOTES.map((q) => (
-          <figure
-            key={q.name}
-            className="reveal relative rounded-2xl glass p-6 shadow-soft transition-all hover:-translate-y-1 hover:shadow-glow"
-          >
-            <Quote className="absolute right-5 top-5 h-6 w-6 text-primary/30" />
-            <blockquote className="text-sm leading-relaxed text-foreground/90">
-              {q.text}
-            </blockquote>
-            <figcaption className="mt-5 flex items-center gap-3">
-              <span className="grid h-10 w-10 place-items-center rounded-full bg-gradient-to-br from-[var(--lavender)] via-[var(--peach)] to-[var(--mint)] font-bold text-foreground">
-                {q.avatar}
-              </span>
-              <span>
-                <span className="block text-sm font-semibold">{q.name}</span>
-                <span className="block text-xs text-muted-foreground">{q.role}</span>
-              </span>
-            </figcaption>
-          </figure>
+          <TestimonialCard key={q.name} {...q} />
         ))}
       </div>
     </div>
