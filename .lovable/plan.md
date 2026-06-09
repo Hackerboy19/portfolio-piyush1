@@ -1,41 +1,40 @@
-## Goal
+## Scope
+Four related improvements across the portfolio. I'll do them in one pass so the refactor and the perf/CLS work touch each file only once.
 
-Make Lighthouse CI failures actionable on PRs by uploading the reports as artifacts and posting a sticky comment that lists each budget breach (mobile LCP, CLS, performance score, etc.) with the actual vs. allowed values.
+### 1. CLS fixes (Lighthouse)
+- Audit every `<img>` and avatar (hero illustration, About photo, project thumbnails, testimonial avatars, OG previews) and add explicit `width`/`height` attributes plus Tailwind `aspect-*` classes so the browser reserves space pre-load.
+- Wrap any icon-only buttons that currently have implicit sizing in fixed `h-/w-` utilities (already mostly true; will sweep).
+- Fonts: move the Google Fonts `<link>` to use `display=swap` (already set) and add a `size-adjust` fallback stack in `@theme` so Inter/Space Grotesk fallback metrics match — eliminates the swap-time text shift.
+- Entrance animations: audit `useReveal` and `PageTransition` to ensure only `opacity` + `transform` are animated (no `height`/`margin`). Replace anything that animates flow-affecting props.
+- Client-state sections (filtered projects grid, contact form submit state, theme toggle) get fixed-size skeleton placeholders so first paint matches loaded state.
 
-## Changes
+### 2. Component refactor
+- Extract inline blocks into focused sub-components:
+  - `components/projects/ProjectCard.tsx`, `ProjectFilters.tsx`
+  - `components/skills/SkillBadge.tsx`, `SkillGroup.tsx`
+  - `components/contact/ContactField.tsx`, `ContactTextarea.tsx`, `ContactInfoCard.tsx`
+  - `components/testimonials/TestimonialCard.tsx`
+- Move `Navbar`, `Footer`, `AnimatedBackground`, `PageTransition` from `components/site/` into `components/layout/` (keep re-export shims for one cycle so imports don't break mid-refactor, then update call sites).
+- Strict TS: introduce shared `types/` (e.g. `Project`, `Skill`, `Testimonial`, `SocialLink` already exists) and replace any loose prop typing with explicit interfaces. No `any`.
+- Note: I will NOT move `src/routes/*` into a `pages/` directory — TanStack Start requires file-based routes under `src/routes/`. Moving them breaks routing. I'll keep route files thin (just `createFileRoute` + `head()` + a page component imported from `components/pages/`), which gives the same separation the prompt is asking for.
 
-### 1. `.github/workflows/lighthouse.yml`
+### 3. Perf polish
+- Skeletons (Tailwind `animate-pulse`) sized to match real content for: Projects grid, Testimonials grid, Hero illustration (above-the-fold placeholder while the image decodes).
+- Image audit:
+  - Hero illustration → `loading="eager"`, `fetchpriority="high"`, `decoding="async"`, explicit dimensions, plus a `<link rel="preload" as="image">` in the index route's `head().links`.
+  - Every other `<img>` and `SmartImage` → `loading="lazy"`, `decoding="async"`, explicit width/height.
 
-- Add `permissions: { contents: read, pull-requests: write }` so the job can comment on PRs.
-- Always run LHCI through `lhci autorun` but pass `|| true` so a budget failure doesn't short-circuit the workflow before reports upload — final pass/fail is re-asserted at the end.
-- Upload the entire `.lighthouseci/` directory as a workflow artifact (`actions/upload-artifact@v4`) so reviewers can download the full HTML report.
-- Add a "Parse LHCI assertions" step that runs `scripts/lhci-comment.mjs` to read `.lighthouseci/assertion-results.json` and emit a Markdown summary to `$GITHUB_STEP_SUMMARY` and `lhci-comment.md`.
-- Add a "Comment on PR" step using `marocchino/sticky-pull-request-comment@v2` (header: `lighthouse-ci`) that posts/updates a single sticky comment on PRs only, body sourced from `lhci-comment.md`.
-- Final step re-exits non-zero if any `error`-level assertion failed, so required-check status still reflects budgets.
+### 4. 404 + Error Boundary
+- Replace the plain `NotFoundComponent` in `__root.tsx` with a themed `routes/__notfound` style page matching the soft anime/tech aesthetic (gradient text, animated background, "Go Back Home" + "Contact" CTAs).
+- `src/router.tsx` already wires `defaultErrorComponent` — upgrade `DefaultErrorComponent` to a themed fallback with Retry (calls `router.invalidate()` + `reset()`) and Go Home actions.
+- Add a top-level React `<ErrorBoundary>` inside `RootComponent` (using a lightweight in-house boundary, no new dep) so render-time errors outside the router also get the themed fallback.
 
-### 2. `scripts/lhci-comment.mjs` (new)
+### Technical notes
+- Tailwind v4: any new tokens (font fallback metrics, skeleton shimmer) go in `src/styles.css` under `@theme` / `@utility`, never a JS config.
+- No route file moves; route files stay in `src/routes/` (TanStack constraint).
+- No dependency additions expected.
+- Cleanup: delete the stale `src/routes/contact.tsx.bak`.
 
-Node script that:
-
-- Reads `.lighthouseci/assertion-results.json` (produced by `lhci assert`).
-- Reads `.lighthouseci/manifest.json` to grab links to the uploaded HTML reports / `temporary-public-storage` URLs.
-- Groups assertions by URL, separates `error` vs `warning`, and renders a Markdown table per URL with columns: Metric, Level, Expected, Actual, Δ.
-- Highlights the mobile-critical metrics (`largest-contentful-paint`, `cumulative-layout-shift`, `total-blocking-time`, `categories:performance`) at the top.
-- Writes the Markdown to both `lhci-comment.md` and `$GITHUB_STEP_SUMMARY`.
-- Exits 0 always (the workflow re-asserts pass/fail separately).
-
-### 3. `lighthouserc.json`
-
-- Keep current mobile preset and budgets.
-- Confirm `upload.target` stays `temporary-public-storage` so the comment can link to a hosted HTML report for each run.
-
-## Technical notes
-
-- `marocchino/sticky-pull-request-comment` only runs on `pull_request` events; pushes to `main` still get the artifact + step summary but no comment (PR API isn't available there).
-- `assertion-results.json` is the canonical LHCI output for budget breaches and contains `auditId`, `actual`, `expected`, `operator`, `level`, `url` — everything needed for the table.
-- No app code changes; this is CI-only.
-
-## Out of scope
-
-- Switching off `temporary-public-storage` to a self-hosted LHCI server.
-- Adding new budgets or changing existing thresholds.
+### Out of scope
+- No changes to backend, Supabase schema, or the contact server function.
+- No visual redesign — only structural/perf/a11y polish + themed 404.
